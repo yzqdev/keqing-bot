@@ -1,0 +1,43 @@
+#app {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+:root {
+  --sidebar-nav-link-text-decoration--hover: none;
+  --code-font-size:1rem !important;
+}
+
+.markdown-section {
+  max-width: 95% !important;
+}
+
+
+/* .main-box h2{margin-top: 70px;} */
+/* 代码行号盒子样式 */
+.code-line-box {
+  list-style-type: none;
+  border-right: 1px solid #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  user-select: none;
+}
+
+.code-line-box {
+  padding: calc(1.5em + 1px) 0px 0 0 !important;
+  padding-bottom: calc(1.5em + 20px) !important;
+  margin: 0px !important;
+}
+
+.code-line-box {
+  line-height: inherit !important;
+  background-color: #191919;
+  color: #aaa;
+  font-weight: 400;
+  font-size: var(--code-font-size);
+  text-align: center;
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link rel="icon" href="_media/favicon.ico" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="Description" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+
+    <link rel="stylesheet/less" type="text/css" href="vue.less" />
+    <link rel="stylesheet/less" type="text/css" href="code.less" />
+   
+ 
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/prismjs@1.28.0/themes/prism-tomorrow.min.css"
+    />
+  
+  </head>
+
+  <body class="main-box">
+    <div id="app"><article>加载中🎉</article></div>
+
+    <script>
+      let lineNumber = function (hook, vm) {
+        hook.doneEach(function () {
+          // 功能3，给代码盒子，添加行数样式
+          $("pre code").each(function () {
+            var lines = $(this).text().split("\n").length;
+            var $numbering = $("<ul/>").addClass("code-line-box");
+            $(this).addClass("has-numbering").parent().append($numbering);
+            for (i = 1; i <= lines; i++) {
+              $numbering.append($("<li/>").text(i));
+            }
+          });
+
+          // 功能4，添加 toc 目录
+          var dStr = "";
+          $("#main h2, #main h3, #main h4, #main h5, #main h6").each(
+            function () {
+              $(".toc-box").append(
+                '<li class="toc-' +
+                  this.localName +
+                  '">' +
+                  this.innerHTML +
+                  "</li>"
+              );
+            }
+          );
+        });
+      };
+      window.$docsify = {
+        loadSidebar: "sidebar.md",
+        // autoHeader: true,
+        loadNavbar: false,
+        // basePath: "/docs/",
+        subMaxLevel: 2,
+        copyCode: {
+          buttonText: "复制",
+          errorText: "Error",
+          successText: "已复制",
+        },
+        name: "bot教程",
+        repo: "",
+        pagination: {
+          previousText: "上一章节",
+          nextText: "下一章节",
+        },
+        search: {
+          placeholder: {
+            "/": "搜索",
+          },
+          noData: "找不到结果!",
+        }, // 默认值
+        plugins: [lineNumber],
+
+        // 完整配置参数
+
+        executeScript: true,
+      };
+    </script>
+    <script src="https://unpkg.com/docsify@4.12.2/lib/docsify.min.js"></script>
+    <script src="https://unpkg.zhimg.com/jquery@3.4.1/dist/jquery.min.js"></script>
+    <!-- <script src="https://unpkg.com/prismjs@1.28.0/components/prism-core.js"></script> -->
+    <script src="https://unpkg.com/prismjs@1.28.0/components/prism-java.min.js"></script>
+    <script src="https://unpkg.com/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://unpkg.com/docsify-copy-code"></script>
+    <script src="https://unpkg.com/docsify@4.12.2/lib/plugins/emoji.min.js"></script>
+    <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+    <script src="https://unpkg.com/docsify@4.12.2/lib/plugins/search.min.js"></script>
+
+    <script src="//unpkg.com/less" type="text/javascript"></script>
+  </body>
+</html>
