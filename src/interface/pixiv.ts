@@ -11,3 +11,22 @@ export interface PixivItem {
   tags: string;
   title: string;
 }
+export interface RealPixivItem {
+  pid: number;
+  p: number;
+  uid: number;
+  title: string;
+  author: string;
+  r18: boolean;
+  width: number;
+  height: number;
+  tags: string[];
+  ext: string;
+  uploadDate: number;
+  urls: {
+    original: string;
+  };
+}
+export interface RealPixiv {
+  data: RealPixivItem[];
+}

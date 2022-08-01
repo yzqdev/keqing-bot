@@ -1,7 +1,12 @@
 import { emojs } from "@/constant/mihoyo";
 import { commonReg, mihoyoReg, wallpaperReg } from "@/constant/reg";
 import { getCos, getTongren } from "@/service/mihoyoService";
-import { genshinData, publicData, rankData } from "@/service/pixivService";
+import {
+  genshinData,
+  publicData,
+  rankData,
+  realPixiv,
+} from "@/service/pixivService";
 import { bingApi, paramMap, wallhavenApi } from "@/service/wallpaper";
 import { get360Type, get360TypeMap } from "@/service/360service";
 import { getUp, sleep } from "@/util/db";
@@ -278,7 +283,7 @@ export function createAtAction(evt: GroupMessageEvent) {
       if (commonReg.sleep.test(evt.raw_message)) {
         evt.reply("已暂停");
         sleep();
-        return
+        return;
       } else if (commonReg.getup.test(evt.raw_message)) {
         evt.reply(["我复活啦!", segment.face(99)]);
         getUp();
@@ -286,7 +291,7 @@ export function createAtAction(evt: GroupMessageEvent) {
       }
     }
 
-        createAtEvent(evt);
+    createAtEvent(evt);
   }
 }
 
@@ -319,6 +324,18 @@ export async function getPoetry(evt: GroupMessageEvent) {
       evt.reply(res.content);
     } catch (err) {
       evt.reply(replyMsg.errMsg(err as Error));
+    }
+  }
+}
+export async function createRealPixiv(evt: GroupMessageEvent) {
+  let msg = evt.raw_message;
+  if (mihoyoReg.genshin.test(msg)) {
+    try {
+      let img = await realPixiv();
+      console.log(`获取的图片${img}`);
+      evt.reply(segment.image(img));
+    } catch (e) {
+      evt.reply(replyMsg.errMsg(e  as Error));
     }
   }
 }

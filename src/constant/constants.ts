@@ -7,3 +7,6 @@ export const replyMsg = {
   //cli
   cmdComplete: "命令执行成功",
 };
+export const commonVar = {
+  tag: "GenshinImpact|(Genshin Impact)",
+};

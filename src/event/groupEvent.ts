@@ -35,16 +35,17 @@ export class GroupEvent extends AbstractEvent {
         return;
       }
       if (!evt.atme) {
-
         createGenshinAvatar(evt);
         //排行图片
         createPixivRanking(evt);
         // 推荐图片
         createPixivPublic(evt);
-        createGenshinData(evt);
+          createGenshinData(evt);
         //米哈游表情
         createEmoj(evt);
         getPoetry(evt);
+        //使用pixiv代理
+        // createRealPixiv(evt);
         //bing图片
         createBing(evt);
         //wallhavenApi

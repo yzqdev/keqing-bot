@@ -1,6 +1,8 @@
 import { GroupMessageEvent, segment } from "oicq";
 
 export function createAtEvent(evt: GroupMessageEvent) {
+  if (evt.raw_message) {
+  }
   evt.reply(
     [
       "死鬼,别@我",
