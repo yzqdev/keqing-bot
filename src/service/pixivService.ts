@@ -58,6 +58,6 @@ export async function realPixiv() {
   let img = (await got(
     `https://api.lolicon.app/setu/v2?tag=${commonVar.tag}`
   ).json()) as RealPixiv;
-  let singleImg=img.data[0]!.urls.original;
-  return singleImg
+  let singleImg = img.data[0]!.urls.original;
+  return singleImg;
 }

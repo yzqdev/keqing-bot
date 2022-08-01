@@ -335,7 +335,7 @@ export async function createRealPixiv(evt: GroupMessageEvent) {
       console.log(`获取的图片${img}`);
       evt.reply(segment.image(img));
     } catch (e) {
-      evt.reply(replyMsg.errMsg(e  as Error));
+      evt.reply(replyMsg.errMsg(e as Error));
     }
   }
 }

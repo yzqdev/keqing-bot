@@ -1,3 +1,8 @@
+import {
+  createBing,
+  createGenshinData,
+} from "@/action/groupAction";
+
 export const replyMsg = {
   searchImg: "搜索图片中...",
   errMsg: (err: Error) => {
@@ -10,3 +15,8 @@ export const replyMsg = {
 export const commonVar = {
   tag: "GenshinImpact|(Genshin Impact)",
 };
+export const atMap = new Map([
+  ["原神", createGenshinData],
+  ["rank", createBing],
+]);
+

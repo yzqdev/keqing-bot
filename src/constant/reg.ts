@@ -25,3 +25,6 @@ export const wallpaperReg = {
   wallhaven: /^%wallhaven(#[0-9]+)?/,
   three: /^%360壁纸$/,
 };
+export const atReg = {
+  genshin: /(^原神(#[0-9]+)?$)|(涩图|色图|好看|好康|再来一张)/,
+};
