@@ -15,19 +15,14 @@ import {
   drawback,
   getPoetry,
   help,
-  img360,
+  img360, createDialog,
 } from "@/action/groupAction";
 import { Client, GroupMessageEvent } from "oicq";
 import { getSleepStatus } from "@/util/db";
 
 export class GroupEvent extends AbstractEvent {
   public load(bot: Client): void {
-    bot.on("message.group", function (evt: GroupMessageEvent) {
-      if (evt.raw_message == "hhh") {
-        console.log("hhh");
-        evt.reply("笑什么笑");
-      }
-    });
+
     bot.on("message.group", async function (evt: GroupMessageEvent) {
       createAtAction(evt);
       if (await getSleepStatus()) {
@@ -44,6 +39,7 @@ export class GroupEvent extends AbstractEvent {
         //米哈游表情
         createEmoj(evt);
         getPoetry(evt);
+        createDialog(evt)
         //使用pixiv代理
         // createRealPixiv(evt);
         //bing图片

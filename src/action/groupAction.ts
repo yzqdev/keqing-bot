@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { emojs } from "@/constant/mihoyo";
 import { commonReg, mihoyoReg, wallpaperReg } from "@/constant/reg";
 import { getCos, getTongren } from "@/service/mihoyoService";
@@ -20,6 +21,7 @@ import got from "got";
 import { readFileSync } from "fs";
 import { genHelp } from "@/cli/help";
 import { replyMsg } from "@/constant/constants";
+import { Status } from "@/db/status";
 
 /**
  * trycatch要占一个大括号的位置,算了还是用.catch吧
@@ -125,7 +127,8 @@ export function createBing(evt: GroupMessageEvent) {
 }
 
 /**
- * wallhaven爬虫
+ * <p>wallhaven爬虫</p>
+ * 不要用replace('%',''),replace无法判断%后面是否有值
  * @param evt
  */
 export function createWallhaven(evt: GroupMessageEvent) {
@@ -282,7 +285,10 @@ export function createAtAction(evt: GroupMessageEvent) {
     if (isAdmin) {
       if (commonReg.sleep.test(evt.raw_message)) {
         evt.reply("已暂停");
-        sleep();
+       let status=new Status()
+       status.groupId=evt.group_id
+       status.sleep=true
+       status.save()
         return;
       } else if (commonReg.getup.test(evt.raw_message)) {
         evt.reply(["我复活啦!", segment.face(99)]);
@@ -337,5 +343,16 @@ export async function createRealPixiv(evt: GroupMessageEvent) {
     } catch (e) {
       evt.reply(replyMsg.errMsg(e as Error));
     }
+  }
+}
+
+/**
+ * 一些简单的对话
+ * @param evt
+ */
+export function createDialog (evt: GroupMessageEvent) {
+  if (evt.raw_message == "hhh") {
+    console.log("hhh");
+    evt.reply("笑什么笑");
   }
 }

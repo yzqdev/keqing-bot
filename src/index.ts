@@ -17,8 +17,8 @@ bot
   })
   .login(conf.password);
 
-function bootstrap() {
-  Loader.loader(bot);
+async function bootstrap() {
+      Loader.loader(bot);
 }
 process.on("unhandledRejection", (reason, promise) => {
   console.log("Unhandled Rejection at:", promise, "reason:", reason);

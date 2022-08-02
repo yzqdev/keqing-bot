@@ -6,13 +6,14 @@ import cron from "node-cron";
 import { getTongren } from "@/service/mihoyoService";
 import { randNum } from "@/util/num";
 import { conf } from "@/config";
+import { dontTouchMe } from "@/constant/constants";
 
 export class CronJob extends AbstractEvent {
   load(bot: Client) {
     // 接收戳一戳
     bot.on("notice.group.poke", function (e) {
       if (e.target_id === this.uin) {
-        e.group.sendMsg("别戳我");
+        e.group.sendMsg(`${dontTouchMe[randNum(4)]}`);
       }
     });
 
