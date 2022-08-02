@@ -17,17 +17,19 @@ import {
   help,
   img360, createDialog,
 } from "@/action/groupAction";
-import { Client, GroupMessageEvent } from "oicq";
+import {Client, GroupMessageEvent, segment} from "oicq";
 import { getSleepStatus } from "@/util/db";
+import {db} from "@/util/sql";
 
 export class GroupEvent extends AbstractEvent {
   public load(bot: Client): void {
 
     bot.on("message.group", async function (evt: GroupMessageEvent) {
       createAtAction(evt);
-      if (await getSleepStatus()) {
-        console.log("在睡觉呢");
-        return;
+      let sleep=db.exec(`select sleep from status where group_id = ${evt.group_id}`)
+      if (sleep) {
+       console.log('阿晴睡觉了')
+        return
       }
       if (!evt.atme) {
         createGenshinAvatar(evt);

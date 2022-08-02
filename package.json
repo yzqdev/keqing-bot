@@ -24,22 +24,20 @@
   },
   "dependencies": {
     "@types/node-cron": "^3.0.2",
+    "better-sqlite3": "^7.6.2",
     "cheerio": "1.0.0-rc.12",
     "cli-table3": "^0.6.2",
     "got": "^12.3.0",
-    "@swc/core": "^1.2.222",
     "lowdb": "^3.0.0",
     "node-cron": "^3.0.1",
     "oicq": "^2.3.1",
     "pm2": "^5.2.0",
     "puppeteer": "^15.5.0",
-    "reflect-metadata": "^0.1.13",
-    "sqlite3": "^5.0.11",
-    "timeago.js": "^4.0.2",
-    "typeorm": "^0.3.7"
+    "timeago.js": "^4.0.2"
   },
   "devDependencies": {
     "@sindresorhus/tsconfig": "^3.0.1",
+    "@types/better-sqlite3": "^7.5.0",
     "@types/node": "^18.6.2",
     "esno": "^0.16.3",
     "prettier": "^2.7.1",
