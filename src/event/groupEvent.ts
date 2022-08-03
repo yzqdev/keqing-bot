@@ -19,8 +19,9 @@ import {
   img360,
   createDialog,
 } from "@/action/groupAction";
-import { Client, GroupMessageEvent } from "oicq";
+import {Client, GroupMessageEvent, PrivateMessageEvent} from "oicq";
 import {selectSleep} from "@/util/status";
+import {hello} from "@/action/privateGroupAction";
 
 export class GroupEvent extends AbstractEvent {
   public load(bot: Client): void {
@@ -68,5 +69,10 @@ export class GroupEvent extends AbstractEvent {
         img360(evt);
       }
     });
+
+    //临时群消息
+    bot.on('message.private.group',async function(evt:PrivateMessageEvent){
+      hello(evt)
+    })
   }
 }

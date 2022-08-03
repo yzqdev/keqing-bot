@@ -6,27 +6,11 @@ import cron from "node-cron";
 import { getTongren } from "@/service/mihoyoService";
 import { randNum } from "@/util/num";
 import { conf } from "@/config";
-import { dontTouchMe } from "@/constant/constants";
-import {db} from "@/util/sql";
-import pc from "picocolors";
+
 
 export class CronJob extends AbstractEvent {
   load(bot: Client) {
-    // 接收戳一戳
-    bot.on("notice.group.poke", function (evt) {
-      let sleep = db
-          .prepare(`select sleep from status where group_id = ${evt.group_id}`)
-          .pluck()
-          .get();
-      console.log(pc.cyan(`sleep状态:${sleep}`));
-      if (!sleep) {
-        if (evt.target_id === this.uin) {
-          evt.group.sendMsg(`${dontTouchMe[randNum(5)]}`);
-        }
-        return;
-      }
 
-    });
 
     cron.schedule("1 0 12 * * *", async () => {
       let res: string[][] = await getTongren();

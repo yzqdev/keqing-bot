@@ -20,7 +20,6 @@ import got from "got";
 import { readFileSync } from "fs";
 import { genHelp } from "@/cli/help";
 import { replyMsg } from "@/constant/constants";
-import { db } from "@/util/sql";
 import {addStatus, selectStatus, setStatus} from "@/util/status";
 import {addAdmin, checkAdminExists, removeAdmin, selectAllAdmins} from "@/util/groupAdmin";
 import {addBlack, checkBlackExists} from "@/util/blacklist";
