@@ -7,11 +7,8 @@ import { getTongren } from "@/service/mihoyoService";
 import { randNum } from "@/util/num";
 import { conf } from "@/config";
 
-
 export class CronJob extends AbstractEvent {
   load(bot: Client) {
-
-
     cron.schedule("1 0 12 * * *", async () => {
       let res: string[][] = await getTongren();
       let rand = randNum(40);

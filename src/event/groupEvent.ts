@@ -19,25 +19,31 @@ import {
   img360,
   createDialog,
 } from "@/action/groupAction";
-import {Client, GroupMessageEvent, PrivateMessageEvent} from "oicq";
-import {selectSleep} from "@/util/status";
-import {hello} from "@/action/privateGroupAction";
+import { Client, GroupMessageEvent, PrivateMessageEvent, segment } from "oicq";
+import { selectSleep } from "@/util/status";
+import { hello } from "@/action/privateGroupAction";
+import { selectBlacklists } from "@/util/blacklist";
 
 export class GroupEvent extends AbstractEvent {
   public load(bot: Client): void {
     bot.on("message.group", async function (evt: GroupMessageEvent) {
+      let groupId = evt.group_id;
+      let userId = evt.sender.user_id;
       if (evt.atme) {
         createAtAction(evt);
-        return
+        return;
       }
 
-      let sleep = selectSleep(+evt.group_id)
+      let sleep = selectSleep(evt.group_id);
       console.log(pc.cyan(`sleep状态:${sleep}`));
       if (sleep) {
-
         return;
       }
       if (!evt.atme) {
+        if (selectBlacklists(groupId).includes(userId)) {
+          evt.reply(["您已被拉黑", segment.at(userId)]);
+          return;
+        }
         createGenshinAvatar(evt);
         //排行图片
         createPixivRanking(evt);
@@ -46,7 +52,9 @@ export class GroupEvent extends AbstractEvent {
         createGenshinData(evt);
         //米哈游表情
         createEmoj(evt);
+        //来一首诗
         getPoetry(evt);
+        // 一些对话
         createDialog(evt);
         //使用pixiv代理
         // createRealPixiv(evt);
@@ -71,8 +79,8 @@ export class GroupEvent extends AbstractEvent {
     });
 
     //临时群消息
-    bot.on('message.private.group',async function(evt:PrivateMessageEvent){
-      hello(evt)
-    })
+    bot.on("message.private.group", async function (evt: PrivateMessageEvent) {
+      hello(evt);
+    });
   }
 }

@@ -17,12 +17,17 @@ import { getCharacterAvatar } from "@/service/crawler";
 import { createAtEvent } from "@/action/atAction";
 import { Poetry } from "@/interface/global";
 import got from "got";
-import { readFileSync } from "fs";
-import { genHelp } from "@/cli/help";
+import {readFile } from "fs/promises";
+import {genAdmin, genHelp} from "@/cli/help";
 import { replyMsg } from "@/constant/constants";
-import {addStatus, selectStatus, setStatus} from "@/util/status";
-import {addAdmin, checkAdminExists, removeAdmin, selectAllAdmins} from "@/util/groupAdmin";
-import {addBlack, checkBlackExists} from "@/util/blacklist";
+import { addStatus, selectStatus, setStatus } from "@/util/status";
+import {
+  addAdmin,
+  checkAdminExists,
+  removeAdmin,
+  selectAllAdmins,
+} from "@/util/groupAdmin";
+import { addBlack, checkBlackExists } from "@/util/blacklist";
 
 /**
  * trycatch要占一个大括号的位置,算了还是用.catch吧
@@ -232,18 +237,27 @@ export function drawback(evt: GroupMessageEvent) {
  * 帮助信息
  * @param evt
  */
-export function help(evt: GroupMessageEvent) {
+export async function help(evt: GroupMessageEvent) {
   if (commonReg.help.test(evt.raw_message)) {
-    evt.reply(segment.image(readFileSync(getPup("help", "help.png"))));
+    let helpPng=await readFile(getPup("help", "help.png"))
+    evt.reply(segment.image( helpPng));
+  }
+  if (commonReg.showAdminCmd.test(evt.raw_message)) {
+    let adminPng=await readFile(getPup("help", "admin.png"))
+    evt.reply(segment.image(adminPng ));
   }
 }
 
-export function createCli(evt: GroupMessageEvent) {
+export async function createCli(evt: GroupMessageEvent) {
   let msg = evt.raw_message;
   if (commonReg.cli.test(msg)) {
     let cliArr = msg.split("#", 2);
     if (cliArr[1] == "help") {
-      genHelp();
+     await genHelp();
+      evt.reply(replyMsg.cmdComplete);
+    }
+    if (cliArr[1]=='admin') {
+    await  genAdmin()
       evt.reply(replyMsg.cmdComplete);
     }
   }
@@ -280,74 +294,69 @@ export async function img360(evt: GroupMessageEvent) {
 export function createAtAction(evt: GroupMessageEvent) {
   try {
     let msg = evt.raw_message.trim().replace(/@\S*\s*/, "");
-    let userId =  evt.sender.user_id ;
-    let groupId =  evt.group_id ;
+    let userId = evt.sender.user_id;
+    let groupId = evt.group_id;
     let param = msg.split("#", 2);
-    let admins = selectAllAdmins(groupId)
+    let admins = selectAllAdmins(groupId);
     console.log(pc.cyan(admins.join(" ")));
 
     console.log("发送者" + userId);
 
     let isAdmin =
       commonReg.admin.test(String(userId)) || admins.includes(String(userId));
-    console.log(`数据库是否存在:${admins.includes(userId)}`)
+    console.log(`数据库是否存在:${admins.includes(userId)}`);
     console.log(`管理员?${isAdmin}`);
     console.log(msg);
     if (isAdmin) {
-      let flag =selectStatus(groupId);
+      let flag = selectStatus(groupId);
       if (commonReg.sleep.test(msg)) {
         evt.reply("已暂停");
 
         console.log("是否有group", flag);
         if (flag) {
-          setStatus(groupId,true)
+          setStatus(groupId, true);
         } else {
-           addStatus(groupId,true)
-
+          addStatus(groupId, true);
         }
 
         return;
       }
       if (commonReg.getup.test(msg)) {
-        evt.reply(["我复活啦!", segment.face(99)]);
         if (flag) {
-          setStatus(groupId,false)
-
+          setStatus(groupId, false);
         } else {
-          addStatus(groupId,false)
+          addStatus(groupId, false);
         }
-
+        evt.reply(["我复活啦!", segment.face(99)]);
         return;
       }
       if (commonReg.setAdmin.test(msg)) {
-        let adminFlag =checkAdminExists(groupId,+param[1]!)
-        console.log('setadmin 存在?'+adminFlag)
+        let adminFlag = checkAdminExists(groupId, +param[1]!);
+        console.log("setadmin 存在?" + adminFlag);
         if (adminFlag) {
           evt.reply(`已设置${param[1]}为机器人管理员`);
         } else {
-         addAdmin(groupId,+param[1]!)
+          addAdmin(groupId, +param[1]!);
           evt.reply(`已设置${param[1]}为机器人管理员`);
         }
         return;
       }
       if (commonReg.noAdmin.test(msg)) {
-        let adminFlag =checkAdminExists(groupId,+param[1]!)
+        let adminFlag = checkAdminExists(groupId, +param[1]!);
         if (adminFlag) {
-          removeAdmin(groupId,+param[1]!)
+          removeAdmin(groupId, +param[1]!);
           evt.reply(`${param[1]}不再是机器人管理员`);
         } else {
-
           evt.reply(`${param[1]}不再是机器人管理员`);
         }
         return;
       }
       if (commonReg.setBlack.test(msg)) {
-        let blackFlag =checkBlackExists(groupId,+param[1]!)
+        let blackFlag = checkBlackExists(groupId, +param[1]!);
         if (blackFlag) {
-
           evt.reply(`${param[1]}已被拉黑`);
         } else {
-         addBlack(groupId,+param[1]!)
+          addBlack(groupId, +param[1]!);
           evt.reply(`${param[1]}已被拉黑`);
         }
         return;
@@ -355,7 +364,6 @@ export function createAtAction(evt: GroupMessageEvent) {
     }
 
     createAtEvent(evt);
-
   } catch (e) {
     evt.reply((e as Error).message);
   }

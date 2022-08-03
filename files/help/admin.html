@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>help</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fastly.jsdelivr.net/npm/element-plus/dist/index.css"
+    />
+    <script src="https://fastly.jsdelivr.net/npm/vue"></script>
+    <script src="https://fastly.jsdelivr.net/npm/element-plus"></script>
+    <script src="https://cdn.tailwindcss.com/"></script>
+    <style>
+      html, body {
+          font-family: "Microsoft YaHei UI", serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="m-4 rounded bg-slate-100 shadow min-h-min ">
+        <div class="text-center text-slate-600 pt-4">
+          管理员命令(需要@机器人)
+        </div>
+        <div class="grid grid-cols-2">
+          <article
+            v-for="item in tableData"
+            class="m-4 bg-white h-16 grid grid-rows-2 p-2 justify-center"
+          >
+            <div class="text-black text-center font-bold">{{item.cmd}}</div>
+            <div class="text-slate-600 text-center">{{item.intro}}</div>
+          </article>
+        </div>
+      </div>
+    </div>
+    <script>
+
+      // 使用setup
+      const {createApp, reactive, toRefs} = Vue;
+      const data = reactive({
+          state: 12,
+          tableData: [
+
+
+              {
+                  "cmd": "admin#123456789",
+                  "intro": "设置123456789为bot管理员"
+              },
+            {
+                  "cmd": "nadmin#123456789",
+                  "intro": "取消123456789的bot管理员身份"
+              },
+            {
+                  "cmd": "black#123456789",
+                  "intro": "拉黑123456789"
+              },
+
+
+          ]
+      });
+      const app = createApp({
+          setup() {
+              return {
+                  ...toRefs(data)
+              };
+          }
+      });
+      app.use(ElementPlus);
+      app.mount("#app");
+    </script>
+  </body>
+</html>

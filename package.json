@@ -20,7 +20,7 @@
     "start:build": "tsup&&node bin/cli.mjs",
     "back": "tsup&&pm2 restart bot.json",
     "stop": "pm2 stop bot.json",
-    "lint": "prettier --write src/**/*.{ts,js}"
+    "lint": "prettier --write src/**/*.{ts,js} files/**/*.{html,ts,js,json}"
   },
   "dependencies": {
     "@types/node-cron": "^3.0.2",

@@ -15,7 +15,7 @@ export interface Conf {
    * 初始管理员qq列表
    */
   adminList: number[];
-  blackList:number[]
+  blackList: number[];
 }
 export interface Poetry {
   content: string;

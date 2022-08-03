@@ -6,7 +6,7 @@ import { PrivateEvent } from "./privateEvent";
 import { RequestEvent } from "./requestEvent";
 import { GroupEvent } from "./groupEvent";
 import { OnlineEvent } from "@/event/onlineEvent";
-import {NoticeEvent} from "@/event/noticeEvent";
+import { NoticeEvent } from "@/event/noticeEvent";
 
 export class Loader {
   public static loader(bot: Client) {
@@ -14,7 +14,7 @@ export class Loader {
     new GroupEvent().load(bot);
     new CronJob().load(bot);
     new RequestEvent().load(bot);
-    new NoticeEvent().load(bot)
+    new NoticeEvent().load(bot);
     new PrivateEvent().load(bot);
   }
 }
