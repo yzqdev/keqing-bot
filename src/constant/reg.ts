@@ -15,7 +15,9 @@ export const commonReg = {
   cli: /^%cli#([0-9a-zA-Z\u4e00-\u9fa5]+)?$/,
   poetry: /^%诗词|%古诗$/,
   kfc: /周四|星期四|kfc/,
-  sleep: /(一边去|关闭|关机|睡觉)/,
+  sleep: /(一边去|关闭|关机|睡觉|暂停)/,
+  setAdmin: /^admin#[0-9]{7,11}$/,
+  noAdmin: /^nadmin#[0-9]{7,11}$/,
   getup: /(起来|起床|开机|工作)/,
   admin: new RegExp(conf.adminList.join("|")),
 };

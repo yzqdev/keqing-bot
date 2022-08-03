@@ -1,3 +1,4 @@
+import pc from "picocolors";
 import { AbstractEvent } from "@/event/abstractEvent";
 import {
   createBing,
@@ -15,21 +16,26 @@ import {
   drawback,
   getPoetry,
   help,
-  img360, createDialog,
+  img360,
+  createDialog,
 } from "@/action/groupAction";
-import {Client, GroupMessageEvent, segment} from "oicq";
-import { getSleepStatus } from "@/util/db";
-import {db} from "@/util/sql";
+import { Client, GroupMessageEvent } from "oicq";
+import { db } from "@/util/sql";
 
 export class GroupEvent extends AbstractEvent {
   public load(bot: Client): void {
-
     bot.on("message.group", async function (evt: GroupMessageEvent) {
-      createAtAction(evt);
-      let sleep=db.exec(`select sleep from status where group_id = ${evt.group_id}`)
+      if (evt.atme) {
+        createAtAction(evt);
+      }
+
+      let sleep = db
+        .prepare(`select sleep from status where group_id = ${evt.group_id}`)
+        .pluck()
+        .get();
+      console.log(pc.cyan(`sleep状态:${sleep}`));
       if (sleep) {
-       console.log('阿晴睡觉了')
-        return
+        return;
       }
       if (!evt.atme) {
         createGenshinAvatar(evt);
@@ -41,7 +47,7 @@ export class GroupEvent extends AbstractEvent {
         //米哈游表情
         createEmoj(evt);
         getPoetry(evt);
-        createDialog(evt)
+        createDialog(evt);
         //使用pixiv代理
         // createRealPixiv(evt);
         //bing图片

@@ -1,5 +1,5 @@
 import { GroupMessageEvent, segment } from "oicq";
-import {   atMap } from "@/constant/constants";
+import { atMap } from "@/constant/constants";
 import { mihoyoReg } from "@/constant/reg";
 import { createGenshinData } from "@/action/groupAction";
 function atUseMap(evt: GroupMessageEvent) {

@@ -12,7 +12,7 @@ export interface Conf {
    */
   preferGroup: number[];
   /**
-   * 管理员qq列表
+   * 初始管理员qq列表
    */
   adminList: number[];
 }
