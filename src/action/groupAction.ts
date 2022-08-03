@@ -10,7 +10,6 @@ import {
 } from "@/service/pixivService";
 import { bingApi, paramMap, wallhavenApi } from "@/service/wallpaper";
 import { get360Type, get360TypeMap } from "@/service/360service";
-import { getUp } from "@/util/db";
 import { getPup, readVendorFile } from "@/util/file";
 import { randNum } from "@/util/num";
 import { GroupMessageEvent, segment } from "oicq";
@@ -22,6 +21,9 @@ import { readFileSync } from "fs";
 import { genHelp } from "@/cli/help";
 import { replyMsg } from "@/constant/constants";
 import { db } from "@/util/sql";
+import {addStatus, selectStatus, setStatus} from "@/util/status";
+import {addAdmin, checkAdminExists, removeAdmin, selectAllAdmins} from "@/util/groupAdmin";
+import {addBlack, checkBlackExists} from "@/util/blacklist";
 
 /**
  * trycatch要占一个大括号的位置,算了还是用.catch吧
@@ -279,13 +281,10 @@ export async function img360(evt: GroupMessageEvent) {
 export function createAtAction(evt: GroupMessageEvent) {
   try {
     let msg = evt.raw_message.trim().replace(/@\S*\s*/, "");
-    let userId = String(evt.sender.user_id);
-    let groupId = String(evt.group_id);
+    let userId =  evt.sender.user_id ;
+    let groupId =  evt.group_id ;
     let param = msg.split("#", 2);
-    let admins = db
-      .prepare(`select user_id from group_admin where group_id=${groupId}`)
-      .pluck()
-      .all();
+    let admins = selectAllAdmins(groupId)
     console.log(pc.cyan(admins.join(" ")));
 
     console.log("发送者" + userId);
@@ -296,23 +295,16 @@ export function createAtAction(evt: GroupMessageEvent) {
     console.log(`管理员?${isAdmin}`);
     console.log(msg);
     if (isAdmin) {
-      let flag = db
-        .prepare(`select group_id from status where group_id=${groupId}`)
-        .pluck()
-        .get();
+      let flag =selectStatus(groupId);
       if (commonReg.sleep.test(msg)) {
         evt.reply("已暂停");
 
         console.log("是否有group", flag);
         if (flag) {
-          db.exec(
-            `update status set sleep=true where group_id=${groupId}`
-          );
+          setStatus(groupId,true)
         } else {
-          let sql = db.prepare(
-            `insert into status values(null,${groupId},true)`
-          );
-          sql.run();
+           addStatus(groupId,true)
+
         }
 
         return;
@@ -320,46 +312,51 @@ export function createAtAction(evt: GroupMessageEvent) {
       if (commonReg.getup.test(msg)) {
         evt.reply(["我复活啦!", segment.face(99)]);
         if (flag) {
-          db.exec(
-            `update status set sleep=false where group_id=${groupId}`
-          );
+          setStatus(groupId,false)
+
         } else {
-          db.exec(`insert into status values(null,${groupId},false)`);
+          addStatus(groupId,false)
         }
 
         return;
       }
       if (commonReg.setAdmin.test(msg)) {
-        let adminFlag = db
-          .prepare(`select group_id from group_admin where user_id = ${param[1]} and group_id=${groupId}`)
-          .pluck()
-          .get();
+        let adminFlag =checkAdminExists(groupId,+param[1]!)
         console.log('setadmin 存在?'+adminFlag)
         if (adminFlag) {
           evt.reply(`已设置${param[1]}为机器人管理员`);
         } else {
-          db.exec(`insert into group_admin values(null,${groupId},${param[1]})`);
+         addAdmin(groupId,+param[1]!)
           evt.reply(`已设置${param[1]}为机器人管理员`);
         }
         return;
       }
       if (commonReg.noAdmin.test(msg)) {
-        let adminFlag = db
-            .prepare(`select group_id from group_admin where user_id = ${param[1]} and group_id=${groupId}`)
-          .pluck()
-          .get();
+        let adminFlag =checkAdminExists(groupId,+param[1]!)
         if (adminFlag) {
-          db.exec(`delete from group_admin where user_id=${param[1]} and group_id=${groupId}`);
+          removeAdmin(groupId,+param[1]!)
           evt.reply(`${param[1]}不再是机器人管理员`);
         } else {
 
           evt.reply(`${param[1]}不再是机器人管理员`);
+        }
+        return;
+      }
+      if (commonReg.setBlack.test(msg)) {
+        let blackFlag =checkBlackExists(groupId,+param[1]!)
+        if (blackFlag) {
+
+          evt.reply(`${param[1]}已被拉黑`);
+        } else {
+         addBlack(groupId,+param[1]!)
+          evt.reply(`${param[1]}已被拉黑`);
         }
         return;
       }
     }
 
     createAtEvent(evt);
+
   } catch (e) {
     evt.reply((e as Error).message);
   }

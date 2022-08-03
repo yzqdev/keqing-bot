@@ -47,7 +47,7 @@ pnpm devbuild
 
 ## License
 
-[![license](https://img.shields.io/github/license/halo-dev/halo.svg?style=flat-square)](https://github.com/yzqdev/keqing-bot/blob/main/LICENSE)  
+[![license](https://img.shields.io/github/license/yzqdev/keqing-bot.svg?style=flat-square)](https://github.com/yzqdev/keqing-bot/blob/main/LICENSE)  
 GPL License © 2022 [yzqdev](https://github.com/yzqdev)
 
 ## 鸣谢

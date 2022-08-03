@@ -20,21 +20,20 @@ import {
   createDialog,
 } from "@/action/groupAction";
 import { Client, GroupMessageEvent } from "oicq";
-import { db } from "@/util/sql";
+import {selectSleep} from "@/util/status";
 
 export class GroupEvent extends AbstractEvent {
   public load(bot: Client): void {
     bot.on("message.group", async function (evt: GroupMessageEvent) {
       if (evt.atme) {
         createAtAction(evt);
+        return
       }
 
-      let sleep = db
-        .prepare(`select sleep from status where group_id = ${evt.group_id}`)
-        .pluck()
-        .get();
+      let sleep = selectSleep(+evt.group_id)
       console.log(pc.cyan(`sleep状态:${sleep}`));
       if (sleep) {
+
         return;
       }
       if (!evt.atme) {
