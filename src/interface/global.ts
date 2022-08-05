@@ -15,6 +15,13 @@ export interface Conf {
    * 初始管理员qq列表
    */
   adminList: number[];
+  /**
+   * 主人qq
+   */
+  master: number;
+  /**
+   * 初始黑名单
+   */
   blackList: number[];
 }
 export interface Poetry {

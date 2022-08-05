@@ -1,6 +1,7 @@
 import { Client } from "oicq";
 import { AbstractEvent } from "./abstractEvent";
 import pc from "picocolors";
+
 export class OnlineEvent extends AbstractEvent {
   public load(bot: Client): void {
     bot.on("system.online", function () {

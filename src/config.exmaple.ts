@@ -5,4 +5,6 @@ export const conf: Conf = {
   password: "",
   preferGroup: [],
   adminList: [],
+  master: 0,
+  blackList: [],
 };

@@ -42,7 +42,8 @@ export function createAtEvent(evt: GroupMessageEvent) {
   let msg = rawMessage.replace(/@\S*\s*/, "");
   if (mihoyoReg.genshin.test(msg)) {
     createGenshinData(evt);
-  } else {
-    createAtNotMatch(evt);
+    return;
   }
+
+  createAtNotMatch(evt);
 }

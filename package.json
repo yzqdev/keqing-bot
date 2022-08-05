@@ -2,25 +2,25 @@
   "name": "keqing-bot",
   "version": "0.1.1",
   "description": "A simple qqbot",
-  "author": "yzqdev",
   "repository": {
     "url": "https://github.com/yzqdev/keqing-bot.git"
   },
   "license": "GPL",
+  "author": "yzqdev",
   "main": "bin/cli.mjs",
   "files": [
     "dist",
     "files"
   ],
   "scripts": {
-    "dev": "esno src/index.ts",
+    "back": "tsup&&pm2 restart bot.json",
     "build": "tsup",
+    "dev": "esno src/index.ts",
     "devbuild": "tsup --config tsup.dev.ts && node bin/cli.mjs",
+    "lint": "prettier --write src/**/*.{ts,js} files/**/*.{html,ts,js,json}",
     "start": "node bin/cli.mjs",
     "start:build": "tsup&&node bin/cli.mjs",
-    "back": "tsup&&pm2 restart bot.json",
-    "stop": "pm2 stop bot.json",
-    "lint": "prettier --write src/**/*.{ts,js} files/**/*.{html,ts,js,json}"
+    "stop": "pm2 stop bot.json"
   },
   "dependencies": {
     "@types/node-cron": "^3.0.2",

@@ -17,8 +17,8 @@ import { getCharacterAvatar } from "@/service/crawler";
 import { createAtEvent } from "@/action/atAction";
 import { Poetry } from "@/interface/global";
 import got from "got";
-import {readFile } from "fs/promises";
-import {genAdmin, genHelp} from "@/cli/help";
+import { readFile } from "fs/promises";
+import { genAdmin, genHelp } from "@/cli/help";
 import { replyMsg } from "@/constant/constants";
 import { addStatus, selectStatus, setStatus } from "@/util/status";
 import {
@@ -28,6 +28,7 @@ import {
   selectAllAdmins,
 } from "@/util/groupAdmin";
 import { addBlack, checkBlackExists } from "@/util/blacklist";
+import { conf } from "@/config";
 
 /**
  * trycatch要占一个大括号的位置,算了还是用.catch吧
@@ -239,12 +240,12 @@ export function drawback(evt: GroupMessageEvent) {
  */
 export async function help(evt: GroupMessageEvent) {
   if (commonReg.help.test(evt.raw_message)) {
-    let helpPng=await readFile(getPup("help", "help.png"))
-    evt.reply(segment.image( helpPng));
+    let helpPng = await readFile(getPup("help", "help.png"));
+    evt.reply(segment.image(helpPng));
   }
   if (commonReg.showAdminCmd.test(evt.raw_message)) {
-    let adminPng=await readFile(getPup("help", "admin.png"))
-    evt.reply(segment.image(adminPng ));
+    let adminPng = await readFile(getPup("help", "admin.png"));
+    evt.reply(segment.image(adminPng));
   }
 }
 
@@ -253,11 +254,11 @@ export async function createCli(evt: GroupMessageEvent) {
   if (commonReg.cli.test(msg)) {
     let cliArr = msg.split("#", 2);
     if (cliArr[1] == "help") {
-     await genHelp();
+      await genHelp();
       evt.reply(replyMsg.cmdComplete);
     }
-    if (cliArr[1]=='admin') {
-    await  genAdmin()
+    if (cliArr[1] == "admin") {
+      await genAdmin();
       evt.reply(replyMsg.cmdComplete);
     }
   }
@@ -310,6 +311,21 @@ export function createAtAction(evt: GroupMessageEvent) {
     if (isAdmin) {
       let flag = selectStatus(groupId);
       if (commonReg.sleep.test(msg)) {
+        if (userId == conf.master) {
+          evt.reply("好的,主人");
+          evt.reply([
+            "晚安啦",
+            segment.image(
+              "https://img-static.mihoyo.com/communityweb/upload/1911ab16b4af46252dbd90fc539d4fc5.png"
+            ),
+          ]);
+          if (flag) {
+            setStatus(groupId, true);
+          } else {
+            addStatus(groupId, true);
+          }
+          return;
+        }
         evt.reply("已暂停");
 
         console.log("是否有group", flag);

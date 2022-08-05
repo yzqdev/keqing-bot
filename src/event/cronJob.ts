@@ -12,20 +12,20 @@ export class CronJob extends AbstractEvent {
     cron.schedule("1 0 12 * * *", async () => {
       let res: string[][] = await getTongren();
       let rand = randNum(40);
-      let randomArtile: string[] = res[rand]!;
-      let randomArtile1: string[] = res[rand + 1]!;
-      let randomArtile2: string[] = res[rand + 2]!;
+      let randomArticle: string[] = res[rand]!;
+      let randomArticle1: string[] = res[rand + 1]!;
+      let randomArticle2: string[] = res[rand + 2]!;
       for (let item of conf.preferGroup) {
         bot.sendGroupMsg(item, "12点了,来看一些同人作品吧");
 
         bot.sendGroupMsg(item, [
-          ...randomArtile?.map((item) => {
+          ...randomArticle?.map((item) => {
             return segment.image(item);
           }),
-          ...randomArtile1?.map((item) => {
+          ...randomArticle1?.map((item) => {
             return segment.image(item);
           }),
-          ...randomArtile2?.map((item) => {
+          ...randomArticle2?.map((item) => {
             return segment.image(item);
           }),
         ]);
