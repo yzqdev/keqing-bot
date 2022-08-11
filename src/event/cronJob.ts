@@ -6,6 +6,7 @@ import cron from "node-cron";
 import { getTongren } from "@/service/mihoyoService";
 import { randNum } from "@/util/num";
 import { conf } from "@/config";
+import { replyMsg } from "@/constant/constants";
 
 export class CronJob extends AbstractEvent {
   load(bot: Client) {
@@ -16,7 +17,7 @@ export class CronJob extends AbstractEvent {
       let randomArticle1: string[] = res[rand + 1]!;
       let randomArticle2: string[] = res[rand + 2]!;
       for (let item of conf.preferGroup) {
-        bot.sendGroupMsg(item, "12点了,来看一些同人作品吧");
+        bot.sendGroupMsg(item, replyMsg.about12Clock);
 
         bot.sendGroupMsg(item, [
           ...randomArticle?.map((item) => {

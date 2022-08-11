@@ -1,19 +1,6 @@
 import { GroupMessageEvent, segment } from "oicq";
-import { atMap } from "@/constant/constants";
 import { mihoyoReg } from "@/constant/reg";
 import { createGenshinData } from "@/action/groupAction";
-function atUseMap(evt: GroupMessageEvent) {
-  console.log("rawmessage", evt.raw_message);
-  // let msg=evt.raw_message
-  let msg = evt.raw_message.replace(/@\S*\s*/, "");
-  let method = atMap.get(msg);
-  console.log(!!method);
-  if (!!method) {
-    method(evt);
-  } else {
-    createAtNotMatch(evt);
-  }
-}
 
 /**
  * 正则不匹配时输出

@@ -18,6 +18,7 @@ import {
   help,
   img360,
   createDialog,
+  createVersionAction,
 } from "@/action/groupAction";
 import { Client, GroupMessageEvent, PrivateMessageEvent, segment } from "oicq";
 import { selectSleep } from "@/util/status";
@@ -41,7 +42,6 @@ export class GroupEvent extends AbstractEvent {
       }
       if (!evt.atme) {
         if (selectBlacklists(groupId).includes(userId)) {
-          evt.reply(["您已被拉黑", segment.at(userId)]);
           return;
         }
         createGenshinAvatar(evt);
@@ -56,6 +56,7 @@ export class GroupEvent extends AbstractEvent {
         getPoetry(evt);
         // 一些对话
         createDialog(evt);
+        createVersionAction(evt)
         //使用pixiv代理
         // createRealPixiv(evt);
         //bing图片

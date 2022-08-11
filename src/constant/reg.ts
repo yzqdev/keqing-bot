@@ -12,6 +12,7 @@ export const mihoyoReg = {
 };
 export const commonReg = {
   help: /^(%帮助)|(%help)$/,
+  version:/^%version$/,
   cli: /^%cli#([0-9a-zA-Z\u4e00-\u9fa5]+)?$/,
   poetry: /^%诗词|%古诗$/,
   kfc: /周四|星期四|kfc/,

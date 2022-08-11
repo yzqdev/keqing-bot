@@ -1,7 +1,9 @@
 import puppeteer from "puppeteer";
 
 import { getPup } from "@/util/file";
-
+/**
+ * 生成帮助菜单
+ */
 export async function genHelp() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -16,6 +18,9 @@ export async function genHelp() {
   await page.screenshot({ path: getPup("help", "help.png") });
   await browser.close();
 }
+/**
+ * 生成admin帮助菜单
+ */
 export async function genAdmin() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();

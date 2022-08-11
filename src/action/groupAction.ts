@@ -1,3 +1,4 @@
+import { version } from "../../package.json";
 import pc from "picocolors";
 import { emojs } from "@/constant/mihoyo";
 import { commonReg, mihoyoReg, wallpaperReg } from "@/constant/reg";
@@ -15,7 +16,7 @@ import { randNum } from "@/util/num";
 import { GroupMessageEvent, segment } from "oicq";
 import { getCharacterAvatar } from "@/service/crawler";
 import { createAtEvent } from "@/action/atAction";
-import { Poetry } from "@/interface/global";
+import { MemoryUsage, Poetry } from "@/interface/global";
 import got from "got";
 import { readFile } from "fs/promises";
 import { genAdmin, genHelp } from "@/cli/help";
@@ -27,7 +28,7 @@ import {
   removeAdmin,
   selectAllAdmins,
 } from "@/util/groupAdmin";
-import { addBlack, checkBlackExists } from "@/util/blacklist";
+import { addBlack, checkBlackExists, selectBlacklists } from "@/util/blacklist";
 import { conf } from "@/config";
 
 /**
@@ -302,7 +303,10 @@ export function createAtAction(evt: GroupMessageEvent) {
     console.log(pc.cyan(admins.join(" ")));
 
     console.log("发送者" + userId);
-
+    if (selectBlacklists(groupId).includes(userId)) {
+      evt.reply(["您已被拉黑", segment.at(userId)]);
+      return;
+    }
     let isAdmin =
       commonReg.admin.test(String(userId)) || admins.includes(String(userId));
     console.log(`数据库是否存在:${admins.includes(userId)}`);
@@ -439,5 +443,16 @@ export function createDialog(evt: GroupMessageEvent) {
   if (evt.raw_message == "hhh") {
     console.log("hhh");
     evt.reply("笑什么笑");
+  }
+}
+export function createVersionAction(evt: GroupMessageEvent) {
+  if  (commonReg.version.test(evt.raw_message.trim())  ) {
+    const used: MemoryUsage = process.memoryUsage();
+    let mem: number = Math.round((used.heapTotal / 1024 / 1024) * 100) / 100;
+
+    console.log("mem=>");
+    console.log(mem);
+    let versionInfo = `版本:${version}\n使用内存:${mem}MB`;
+    evt.group.sendMsg(versionInfo);
   }
 }
