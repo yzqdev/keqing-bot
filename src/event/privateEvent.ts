@@ -14,11 +14,8 @@ export class PrivateEvent extends AbstractEvent {
     bot.on("message.private", function (evt) {
       let msg = evt.raw_message;
       let userId = evt.sender.user_id;
-      // let msg = rawMessage.replace(/@\S*\s*/, "");
-      addPrivateNote(userId, msg, evt);
-      getPrivateNote(userId, msg, evt);
-      delPrivateNote(userId, msg, evt);
-        privateHello(userId,msg,evt);
+
+      privateHello(evt);
     });
   }
 }

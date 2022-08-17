@@ -30,6 +30,7 @@ import {
 } from "@/util/groupAdmin";
 import { addBlack, checkBlackExists, selectBlacklists } from "@/util/blacklist";
 import { conf } from "@/config";
+import { addNote, delNote, Note, selectNote } from "@/util/note";
 
 /**
  * trycatch要占一个大括号的位置,算了还是用.catch吧
@@ -265,16 +266,21 @@ export async function help(evt: GroupMessageEvent) {
     evt.reply(segment.image(adminPng));
   }
 }
-
+/**
+ * cli#help
+ * @param evt 
+ */
 export async function createCli(evt: GroupMessageEvent) {
   let msg = evt.raw_message;
   if (commonReg.cli.test(msg)) {
     let cliArr = msg.split("#", 2);
     if (cliArr[1] == "help") {
+      console.log('生成帮助文件');
       await genHelp();
       evt.reply(replyMsg.cmdComplete);
     }
     if (cliArr[1] == "admin") {
+      console.log('生成admin指令');
       await genAdmin();
       evt.reply(replyMsg.cmdComplete);
     }
@@ -470,5 +476,69 @@ export function createVersionAction(evt: GroupMessageEvent) {
     console.log(mem);
     let versionInfo = `版本:${version}\n使用内存:${mem}MB`;
     evt.group.sendMsg(versionInfo);
+  }
+}
+
+/**
+ * 添加记事
+ * @param userId qq
+ * @param msg
+ * @param evt
+ * @returns
+ */
+export function addPrivateNote(
+  userId: number,
+  msg: string,
+  evt: GroupMessageEvent
+) {
+  if (commonReg.addNote.test(msg)) {
+    console.log(userId);
+    let noteStr = msg.split("#", 2);
+    let [content, tag] = noteStr[1]?.split(".", 2)!;
+    console.log(content, tag);
+    addNote(content!, tag!, userId);
+    evt.reply("完成");
+    return;
+  }
+}
+/**
+ * 查记事
+ * @param userId
+ * @param msg
+ * @param evt
+ * @returns
+ */
+export function getPrivateNote(
+  userId: number,
+  msg: string,
+  evt: GroupMessageEvent
+) {
+  if (commonReg.getNote.test(msg)) {
+    let notes = selectNote(userId) as Note[];
+    let head = "id,tag,content\n";
+    let res = notes.map((item) => {
+      return `${item.id},${item.tag},${item.content}`;
+    });
+    evt.reply(head + res.join("\n"));
+    return;
+  }
+}
+/**
+ * 删除记事
+ * @param userId
+ * @param msg
+ * @param evt
+ * @returns
+ */
+export function delPrivateNote(
+  userId: number,
+  msg: string,
+  evt: GroupMessageEvent
+) {
+  if (commonReg.delNote.test(msg)) {
+    let [_, noticeId] = msg.split("#", 2);
+    delNote(+noticeId!, userId);
+    evt.reply("删除成功");
+    return;
   }
 }

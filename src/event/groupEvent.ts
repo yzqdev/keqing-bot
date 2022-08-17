@@ -24,12 +24,18 @@ import { Client, GroupMessageEvent, PrivateMessageEvent, segment } from "oicq";
 import { selectSleep } from "@/util/status";
 import { hello } from "@/action/privateGroupAction";
 import { selectBlacklists } from "@/util/blacklist";
+import {
+  addPrivateNote,
+  delPrivateNote,
+  getPrivateNote,
+} from "@/action/groupAction";
 
 export class GroupEvent extends AbstractEvent {
   public load(bot: Client): void {
     bot.on("message.group", async function (evt: GroupMessageEvent) {
       let groupId = evt.group_id;
       let userId = evt.sender.user_id;
+      let msg = evt.raw_message;
       if (evt.atme) {
         createAtAction(evt);
         return;
@@ -42,6 +48,7 @@ export class GroupEvent extends AbstractEvent {
       }
       if (!evt.atme) {
         if (selectBlacklists(groupId).includes(userId)) {
+          console.log(pc.cyan('在黑名单'));
           return;
         }
         createGenshinAvatar(evt);
@@ -76,6 +83,11 @@ export class GroupEvent extends AbstractEvent {
         createCli(evt);
         //360图片
         img360(evt);
+
+        //记事相关
+        addPrivateNote(userId, msg, evt);
+        getPrivateNote(userId, msg, evt);
+        delPrivateNote(userId, msg, evt);
       }
     });
 

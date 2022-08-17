@@ -9,7 +9,7 @@ export async function genHelp() {
   const page = await browser.newPage();
   await page.setViewport({
     width: 640,
-    height: 700,
+    height: 840,
   });
   let htmlPath = `file://${getPup("help", "help.html")}`;
   console.log(htmlPath);
