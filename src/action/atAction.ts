@@ -1,5 +1,5 @@
 import { GroupMessageEvent, segment } from "oicq";
-import { mihoyoReg } from "@/constant/reg";
+import { commonReg, mihoyoReg } from "@/constant/reg";
 import { createGenshinData } from "@/action/groupAction";
 
 /**

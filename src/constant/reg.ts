@@ -11,8 +11,12 @@ export const mihoyoReg = {
   char: /^%角色#[\u4e00-\u9fa5]+/,
 };
 export const commonReg = {
+   
+  addNote: /^记事#[0-9a-zA-Z\u4e00-\u9fa5]+\.[0-9a-zA-Z\u4e00-\u9fa5]+/,
+  getNote: /^查记事/,
+  delNote: /^删记事#\d+/,
   help: /^(%帮助)|(%help)$/,
-  version:/^%version$/,
+  version: /^%version$/,
   cli: /^%cli#([0-9a-zA-Z\u4e00-\u9fa5]+)?$/,
   poetry: /^%诗词|%古诗$/,
   kfc: /周四|星期四|kfc/,

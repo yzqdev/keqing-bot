@@ -10,6 +10,7 @@ export interface PixivItem {
   original_url: string;
   tags: string;
   title: string;
+  picture_id: string;
 }
 export interface RealPixivItem {
   pid: number;

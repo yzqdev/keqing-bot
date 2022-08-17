@@ -56,7 +56,7 @@ export class GroupEvent extends AbstractEvent {
         getPoetry(evt);
         // 一些对话
         createDialog(evt);
-        createVersionAction(evt)
+        createVersionAction(evt);
         //使用pixiv代理
         // createRealPixiv(evt);
         //bing图片

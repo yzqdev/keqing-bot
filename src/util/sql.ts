@@ -13,3 +13,6 @@ db.exec(
 db.exec(
   "create table if not exists blacklist (id INTEGER PRIMARY KEY AUTOINCREMENT, group_id INTEGER  ,user_id INTEGER)"
 );
+db.exec(
+  "create table if not exists note (id INTEGER PRIMARY KEY AUTOINCREMENT, tag TEXT  ,content TEXT,user_id INTEGER )"
+);

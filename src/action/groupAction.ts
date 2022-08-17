@@ -43,11 +43,19 @@ export function createGenshinData(evt: GroupMessageEvent) {
     try {
       if (msgArr[1]) {
         genshinData(+msgArr[1]).then((img) => {
-          evt.reply(segment.image(img[randNum(30)]!.original_url));
+          let res = img[randNum(30)];
+          evt.reply([
+            `title:${res?.title}\npid:${res?.picture_id}\n`,
+            segment.image(res?.original_url!),
+          ]);
         });
       } else {
         genshinData(randNum(10)).then((img) => {
-          evt.reply(segment.image(img[randNum(30)]!.original_url));
+          let res = img[randNum(30)];
+          evt.reply([
+            `title:${res?.title}\npid:${res?.picture_id}\n`,
+            segment.image(res?.original_url!),
+          ]);
         });
       }
     } catch (err) {
@@ -68,7 +76,11 @@ export function createPixivPublic(evt: GroupMessageEvent) {
     if (msgArr[1]) {
       publicData(+msgArr[1])
         .then((img) => {
-          evt.reply(segment.image(img[randNum(16)]!.original_url));
+          let res = img[randNum(16)];
+          evt.reply([
+            `title:${res?.title}\npid:${res?.picture_id}\n`,
+            segment.image(res?.original_url!),
+          ]);
         })
         .catch((err) => {
           evt.reply(replyMsg.errMsg(err));
@@ -89,7 +101,11 @@ export function createPixivRanking(evt: GroupMessageEvent) {
     if (msgArr[1]) {
       rankData(+msgArr[1])
         .then((img) => {
-          evt.reply(segment.image(img[randNum(16)]!.original_url));
+          let res = img[randNum(16)];
+          evt.reply([
+            `title:${res?.title}\npid:${res?.picture_id}\n`,
+            segment.image(res?.original_url!),
+          ]);
         })
         .catch((err) => {
           evt.reply(replyMsg.errMsg(err));
@@ -446,9 +462,9 @@ export function createDialog(evt: GroupMessageEvent) {
   }
 }
 export function createVersionAction(evt: GroupMessageEvent) {
-  if  (commonReg.version.test(evt.raw_message.trim())  ) {
+  if (commonReg.version.test(evt.raw_message.trim())) {
     const used: MemoryUsage = process.memoryUsage();
-    let mem: number = Math.round((used.heapTotal / 1024 / 1024) * 100) / 100;
+    let mem: number = Math.round((used.rss / 1024 / 1024) * 100) / 100;
 
     console.log("mem=>");
     console.log(mem);

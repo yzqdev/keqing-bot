@@ -3,7 +3,9 @@ export const replyMsg = {
   errMsg: (err: Error) => {
     return `不好意思,出错了=>${err}`;
   },
+  blackMsg: "您已被拉黑",
   about12Clock: "12点了,来看一些同人作品吧",
+  groupIncreaseMsg: "欢迎新人,新人爆音爆照,学张飞唱歌!",
   //cli
   cmdComplete: "命令执行成功",
 };

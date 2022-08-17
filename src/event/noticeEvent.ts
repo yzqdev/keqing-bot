@@ -1,7 +1,7 @@
 import { AbstractEvent } from "@/event/abstractEvent";
-import { Client, GroupPokeEvent, segment } from "oicq";
+import { Client, GroupNoticeEvent, GroupPokeEvent, segment } from "oicq";
 import pc from "picocolors";
-import { dontTouchMe } from "@/constant/constants";
+import { dontTouchMe, replyMsg } from "@/constant/constants";
 import { randNum } from "@/util/num";
 import { selectSleep } from "@/util/status";
 import { selectBlacklists } from "@/util/blacklist";
@@ -13,7 +13,7 @@ export class NoticeEvent extends AbstractEvent {
       let groupId = evt.group_id;
       let userId = evt.target_id;
       if (selectBlacklists(groupId).includes(userId)) {
-        evt.group.sendMsg(["您已被拉黑", segment.at(userId)]);
+        evt.group.sendMsg([replyMsg.blackMsg, segment.at(userId)]);
         return;
       }
       let sleep = selectSleep(evt.group_id);
@@ -24,6 +24,10 @@ export class NoticeEvent extends AbstractEvent {
         }
         return;
       }
+    });
+    //群成员增加
+    bot.on("notice.group.increase", function (evt: GroupNoticeEvent) {
+      evt.group.sendMsg(replyMsg.groupIncreaseMsg);
     });
   }
 }
