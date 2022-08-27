@@ -37,3 +37,22 @@ export interface MemoryUsage {
   external: number;
   arrayBuffers: number;
 }
+export interface XiaojiDefinition {
+  category: string;
+  comment_count: number;
+  commentable: boolean;
+  content: string;
+  created_at:string;
+  definition_count: number;
+  deletable: boolean;
+  dislike_count:number
+}
+export interface XiaojiDict {
+  albums: [];
+  banners: [];
+  category: string;
+  definitions: XiaojiDefinition[];
+  tags: [];
+  topics: [];
+  users: [];
+}

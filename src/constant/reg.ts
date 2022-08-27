@@ -4,7 +4,7 @@ export const mihoyoReg = {
   pixivPublic: /^%推荐(#[0-9]+)?/,
   pixivRank: /^%排行(#[0-9]+)?/,
   tongren: /^%同人$/,
-  genshin: /(^%原神(#[0-9]+)?$)|(涩图|色图|好看|好康|再来一张)/,
+  genshin: /(^%原神(#[0-9]+)?$)|%(涩图|色图|好看|好康|再来一张)/,
 
   cos: /^%cos$/,
   emoj: /^%emoj$/,
@@ -20,6 +20,7 @@ export const commonReg = {
    * cli#help
    */
   cli: /^%cli#([0-9a-zA-Z\u4e00-\u9fa5]+)?$/,
+  dict: /^%词典#([0-9a-zA-Z\u4e00-\u9fa5]+)/,
   poetry: /^%诗词|%古诗$/,
   kfc: /周四|星期四|kfc/,
   sleep: /(一边去|关闭|关机|睡觉|暂停)/,

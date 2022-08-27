@@ -16,7 +16,7 @@ import { randNum } from "@/util/num";
 import { GroupMessageEvent, segment } from "oicq";
 import { getCharacterAvatar } from "@/service/crawler";
 import { createAtEvent } from "@/action/atAction";
-import { MemoryUsage, Poetry } from "@/interface/global";
+import { MemoryUsage, Poetry, XiaojiDict } from "@/interface/global";
 import got from "got";
 import { readFile } from "fs/promises";
 import { genAdmin, genHelp } from "@/cli/help";
@@ -268,19 +268,19 @@ export async function help(evt: GroupMessageEvent) {
 }
 /**
  * cli#help
- * @param evt 
+ * @param evt
  */
 export async function createCli(evt: GroupMessageEvent) {
   let msg = evt.raw_message;
   if (commonReg.cli.test(msg)) {
     let cliArr = msg.split("#", 2);
     if (cliArr[1] == "help") {
-      console.log('生成帮助文件');
+      console.log("生成帮助文件");
       await genHelp();
       evt.reply(replyMsg.cmdComplete);
     }
     if (cliArr[1] == "admin") {
-      console.log('生成admin指令');
+      console.log("生成admin指令");
       await genAdmin();
       evt.reply(replyMsg.cmdComplete);
     }
@@ -433,8 +433,6 @@ export async function createGenshinAvatar(evt: GroupMessageEvent) {
 export async function getPoetry(evt: GroupMessageEvent) {
   let msg = evt.raw_message;
   if (commonReg.poetry.test(msg)) {
-    evt.reply("搜索诗词中");
-
     try {
       let res: Poetry = await got("https://v1.jinrishici.com/all.json").json();
       evt.reply(res.content);
@@ -443,7 +441,30 @@ export async function getPoetry(evt: GroupMessageEvent) {
     }
   }
 }
+export async function getXiaojiDict(evt: GroupMessageEvent) {
+  let msg = evt.raw_message;
+  if (commonReg.dict.test(msg)) {
+    let [_, searchWord] = msg.split("#", 2);
 
+    try {
+      let { data } = (await got
+        .post("https://api.jikipedia.com/go/search_entities", {
+          json: {
+            page: 1,
+            phrase: searchWord!.trim(),
+            size: 60,
+          },
+        })
+        .json()) as { data: XiaojiDict[] };
+      let res = data.slice(3).map((item) => {
+        return item.definitions[0]?.content;
+      });
+      evt.reply(res.join("\n\n"));
+    } catch (err) {
+      evt.reply(replyMsg.errMsg(err as Error));
+    }
+  }
+}
 export async function createRealPixiv(evt: GroupMessageEvent) {
   let msg = evt.raw_message;
   if (mihoyoReg.genshin.test(msg)) {
@@ -486,7 +507,7 @@ export function createVersionAction(evt: GroupMessageEvent) {
  * @param evt
  * @returns
  */
-export function addPrivateNote(
+export function addGroupNote(
   userId: number,
   msg: string,
   evt: GroupMessageEvent
@@ -508,18 +529,22 @@ export function addPrivateNote(
  * @param evt
  * @returns
  */
-export function getPrivateNote(
+export function getGroupNote(
   userId: number,
   msg: string,
   evt: GroupMessageEvent
 ) {
   if (commonReg.getNote.test(msg)) {
     let notes = selectNote(userId) as Note[];
-    let head = "id,tag,content\n";
-    let res = notes.map((item) => {
-      return `${item.id},${item.tag},${item.content}`;
-    });
-    evt.reply(head + res.join("\n"));
+    if (notes) {
+      let head = "id,tag,content\n";
+      let res = notes.map((item) => {
+        return `${item.id},${item.tag},${item.content}`;
+      });
+      evt.reply(head + res.join("\n"));
+    } else {
+      evt.reply("对不起,您没有记事");
+    }
     return;
   }
 }
@@ -530,7 +555,7 @@ export function getPrivateNote(
  * @param evt
  * @returns
  */
-export function delPrivateNote(
+export function delGroupNote(
   userId: number,
   msg: string,
   evt: GroupMessageEvent

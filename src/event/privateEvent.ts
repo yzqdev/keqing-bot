@@ -6,8 +6,7 @@ import {
   getPrivateNote,
   privateHello,
 } from "@/action/privateAction";
-import { commonReg } from "@/constant/reg";
-import { addNote, Note, selectNote } from "@/util/note";
+ 
 
 export class PrivateEvent extends AbstractEvent {
   public load(bot: Client): void {
@@ -15,7 +14,10 @@ export class PrivateEvent extends AbstractEvent {
       let msg = evt.raw_message;
       let userId = evt.sender.user_id;
 
-      privateHello(evt);
+      // privateHello(userId,msg,evt);
+      addPrivateNote(userId,msg,evt)
+      delPrivateNote(userId,msg,evt)
+      getPrivateNote(userId,msg,evt)
     });
   }
 }

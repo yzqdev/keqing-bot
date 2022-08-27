@@ -19,15 +19,16 @@ import {
   img360,
   createDialog,
   createVersionAction,
+  getXiaojiDict,
 } from "@/action/groupAction";
-import { Client, GroupMessageEvent, PrivateMessageEvent, segment } from "oicq";
+import { Client, GroupMessageEvent, PrivateMessageEvent,  } from "oicq";
 import { selectSleep } from "@/util/status";
 import { hello } from "@/action/privateGroupAction";
 import { selectBlacklists } from "@/util/blacklist";
 import {
-  addPrivateNote,
-  delPrivateNote,
-  getPrivateNote,
+  addGroupNote,
+  delGroupNote,
+  getGroupNote,
 } from "@/action/groupAction";
 
 export class GroupEvent extends AbstractEvent {
@@ -61,6 +62,8 @@ export class GroupEvent extends AbstractEvent {
         createEmoj(evt);
         //来一首诗
         getPoetry(evt);
+        //词典
+        getXiaojiDict(evt)
         // 一些对话
         createDialog(evt);
         createVersionAction(evt);
@@ -85,9 +88,9 @@ export class GroupEvent extends AbstractEvent {
         img360(evt);
 
         //记事相关
-        addPrivateNote(userId, msg, evt);
-        getPrivateNote(userId, msg, evt);
-        delPrivateNote(userId, msg, evt);
+        addGroupNote(userId, msg, evt);
+        getGroupNote(userId, msg, evt);
+        delGroupNote(userId, msg, evt);
       }
     });
 
