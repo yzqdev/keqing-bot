@@ -7,7 +7,14 @@ const account = conf.account;
 const bot = createClient(account, {
   data_dir: process.cwd() + "/data",
 });
-
+bot.on("system.login.device", () => {
+  bot.logger.mark("输入密保手机收到的短信验证码后按下回车键继续。");
+  bot.sendSmsCode();
+  process.stdin.once("data", (input) => {
+    bot.submitSmsCode(input.toString());
+   
+  });
+});
 bot
   .on("system.login.slider", function () {
     console.log("输入ticket：");
@@ -15,7 +22,17 @@ bot
       this.submitSlider(String(ticket).trim())
     );
   })
-  .login(conf.password);
+   
+bot.on("system.login.qrcode", () => {
+  bot.logger.mark("手机扫码完成后按下回车键继续。");
+  process.stdin.once("data", () => {
+    bot.login();
+    
+  });
+}) 
+
+bot.login(conf.password);
+
 
 async function bootstrap() {
   Loader.loader(bot);

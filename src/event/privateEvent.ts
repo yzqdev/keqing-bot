@@ -13,6 +13,9 @@ export class PrivateEvent extends AbstractEvent {
     bot.on("message.private", function (evt) {
       let msg = evt.raw_message;
       let userId = evt.sender.user_id;
+       console.log("🚀 ~ file: privateEvent.ts ~ line 16 ~ PrivateEvent ~ userId", userId)
+       
+     
 
       // privateHello(userId,msg,evt);
       addPrivateNote(userId,msg,evt)

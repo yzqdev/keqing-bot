@@ -30,7 +30,7 @@ import {
   delGroupNote,
   getGroupNote,
 } from "@/action/groupAction";
-
+ 
 export class GroupEvent extends AbstractEvent {
   public load(bot: Client): void {
     bot.on("message.group", async function (evt: GroupMessageEvent) {
