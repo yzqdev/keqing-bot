@@ -13,10 +13,10 @@ import { bingApi, paramMap, wallhavenApi } from "@/service/wallpaper";
 import { get360Type, get360TypeMap } from "@/service/360service";
 import { getPup, readVendorFile } from "@/util/file";
 import { randNum } from "@/util/num";
-import { GroupMessageEvent, segment } from "oicq";
+import { type GroupMessageEvent, segment } from "icqq";
 import { getCharacterAvatar } from "@/service/crawler";
 import { createAtEvent } from "@/action/atAction";
-import { MemoryUsage, Poetry, XiaojiDict } from "@/interface/global";
+import type { MemoryUsage, Poetry, XiaojiDict } from "@/interface/global";
 import got from "got";
 import { readFile } from "fs/promises";
 import { genAdmin, genHelp } from "@/cli/help";
@@ -30,34 +30,32 @@ import {
 } from "@/util/groupAdmin";
 import { addBlack, checkBlackExists, selectBlacklists } from "@/util/blacklist";
 import { conf } from "@/config";
-import { addNote, delNote, Note, selectNote } from "@/util/note";
+import { addNote, delNote, type Note, selectNote } from "@/util/note";
 
 /**
  * trycatch要占一个大括号的位置,算了还是用.catch吧
  * @param evt
  */
-export function createGenshinData(evt: GroupMessageEvent) {
+export async function createGenshinData(evt: GroupMessageEvent) {
   let msg = evt.raw_message;
   if (mihoyoReg.genshin.test(msg)) {
     //evt.reply(replyMsg.searchImg);
     let msgArr = msg.split("#", 2);
     try {
       if (msgArr[1]) {
-        genshinData(+msgArr[1]).then((img) => {
-          let res = img[randNum(30)];
-          evt.reply([
-            `title:${res?.title}\npid:${res?.picture_id}\n`,
-            segment.image(res?.original_url!),
-          ]);
-        });
+        const img = await genshinData(+msgArr[1]);
+        let res = img[randNum(30)];
+        evt.reply([
+          `title:${res?.title}\npid:${res?.picture_id}\n`,
+          segment.image(res?.original_url!),
+        ]);
       } else {
-        genshinData(randNum(10)).then((img) => {
-          let res = img[randNum(30)];
-          evt.reply([
-            `title:${res?.title}\npid:${res?.picture_id}\n`,
-            segment.image(res?.original_url!),
-          ]);
-        });
+        const img = await genshinData(randNum(10));
+        let res = img[randNum(30)];
+        evt.reply([
+          `title:${res?.title}\npid:${res?.picture_id}\n`,
+          segment.image(res?.original_url!),
+        ]);
       }
     } catch (err) {
       evt.reply(replyMsg.errMsg(err as Error));
@@ -342,7 +340,7 @@ export function createAtAction(evt: GroupMessageEvent) {
           evt.reply([
             "晚安啦",
             segment.image(
-              "https://img-static.mihoyo.com/communityweb/upload/1911ab16b4af46252dbd90fc539d4fc5.png"
+              "https://img-static.mihoyo.com/communityweb/upload/1911ab16b4af46252dbd90fc539d4fc5.png",
             ),
           ]);
           if (flag) {
@@ -510,7 +508,7 @@ export function createVersionAction(evt: GroupMessageEvent) {
 export function addGroupNote(
   userId: number,
   msg: string,
-  evt: GroupMessageEvent
+  evt: GroupMessageEvent,
 ) {
   if (commonReg.addNote.test(msg)) {
     console.log(userId);
@@ -532,7 +530,7 @@ export function addGroupNote(
 export function getGroupNote(
   userId: number,
   msg: string,
-  evt: GroupMessageEvent
+  evt: GroupMessageEvent,
 ) {
   if (commonReg.getNote.test(msg)) {
     let notes = selectNote(userId) as Note[];
@@ -558,7 +556,7 @@ export function getGroupNote(
 export function delGroupNote(
   userId: number,
   msg: string,
-  evt: GroupMessageEvent
+  evt: GroupMessageEvent,
 ) {
   if (commonReg.delNote.test(msg)) {
     let [_, noticeId] = msg.split("#", 2);

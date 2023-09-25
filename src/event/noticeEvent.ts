@@ -1,5 +1,6 @@
 import { AbstractEvent } from "@/event/abstractEvent";
-import { Client, GroupNoticeEvent, GroupPokeEvent, segment } from "oicq";
+import { Client, segment } from "icqq";
+import type { GroupNoticeEvent, GroupPokeEvent } from "icqq";
 import pc from "picocolors";
 import { dontTouchMe, replyMsg } from "@/constant/constants";
 import { randNum } from "@/util/num";
@@ -18,8 +19,9 @@ export class NoticeEvent extends AbstractEvent {
       }
       let sleep = selectSleep(evt.group_id);
       console.log(pc.cyan(`sleep状态:${sleep}`));
+
       if (!sleep) {
-        if (evt.target_id === this.uin) {
+        if (evt.target_id === bot.uin) {
           evt.group.sendMsg(`${dontTouchMe[randNum(dontTouchMe.length)]}`);
         }
         return;

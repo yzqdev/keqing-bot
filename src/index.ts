@@ -1,41 +1,42 @@
-"use strict";
-import { createClient } from "oicq";
+import { createClient } from "icqq";
 import { Loader } from "./event/loader";
 import { conf } from "./config";
 const account = conf.account;
 
-const bot = createClient(account, {
-  data_dir: process.cwd() + "/data",
-});
-bot.on("system.login.device", () => {
-  bot.logger.mark("输入密保手机收到的短信验证码后按下回车键继续。");
-  bot.sendSmsCode();
-  process.stdin.once("data", (input) => {
-    bot.submitSmsCode(input.toString());
-   
+const client = createClient({ platform: 3 });
+client.on("system.login.slider", (e) => {
+  console.log("输入滑块地址获取的ticket后继续。\n滑块地址:    " + e.url);
+  process.stdin.once("data", (data) => {
+    client.submitSlider(data.toString().trim());
   });
 });
-bot
-  .on("system.login.slider", function () {
-    console.log("输入ticket：");
-    process.stdin.once("data", (ticket) =>
-      this.submitSlider(String(ticket).trim())
-    );
-  })
-   
-bot.on("system.login.qrcode", () => {
-  bot.logger.mark("手机扫码完成后按下回车键继续。");
+client.on("system.login.qrcode", (e) => {
+  console.log("扫码完成后回车继续:    ");
   process.stdin.once("data", () => {
-    bot.login();
-    
+    client.login();
   });
-}) 
-
-bot.login(conf.password);
-
+});
+client.on("system.login.device", (e) => {
+  console.log("请选择验证方式:(1：短信验证   其他：扫码验证)");
+  process.stdin.once("data", (data) => {
+    if (data.toString().trim() === "1") {
+      client.sendSmsCode();
+      console.log("请输入手机收到的短信验证码:");
+      process.stdin.once("data", (res) => {
+        client.submitSmsCode(res.toString().trim());
+      });
+    } else {
+      console.log("扫码完成后回车继续：" + e.url);
+      process.stdin.once("data", () => {
+        client.login();
+      });
+    }
+  });
+});
+client.login(conf.account, conf.password);
 
 async function bootstrap() {
-  Loader.loader(bot);
+  Loader.loader(client);
 }
 process.on("unhandledRejection", (reason, promise) => {
   console.log("Unhandled Rejection at:", promise, "reason:", reason);

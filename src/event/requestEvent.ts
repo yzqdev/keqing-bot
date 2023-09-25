@@ -1,4 +1,4 @@
-import { Client } from "oicq";
+import { Client } from "icqq";
 import { AbstractEvent } from "./abstractEvent";
 
 export class RequestEvent extends AbstractEvent {

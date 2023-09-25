@@ -1,4 +1,4 @@
-import { Conf } from "./interface/global";
+import { type Conf } from "./interface/global";
 
 export const conf: Conf = {
   account: 0,

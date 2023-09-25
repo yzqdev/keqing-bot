@@ -21,16 +21,12 @@ import {
   createVersionAction,
   getXiaojiDict,
 } from "@/action/groupAction";
-import { Client, GroupMessageEvent, PrivateMessageEvent,  } from "oicq";
+import { Client, type GroupMessageEvent, type PrivateMessageEvent } from "icqq";
 import { selectSleep } from "@/util/status";
 import { hello } from "@/action/privateGroupAction";
 import { selectBlacklists } from "@/util/blacklist";
-import {
-  addGroupNote,
-  delGroupNote,
-  getGroupNote,
-} from "@/action/groupAction";
- 
+import { addGroupNote, delGroupNote, getGroupNote } from "@/action/groupAction";
+
 export class GroupEvent extends AbstractEvent {
   public load(bot: Client): void {
     bot.on("message.group", async function (evt: GroupMessageEvent) {
@@ -49,7 +45,7 @@ export class GroupEvent extends AbstractEvent {
       }
       if (!evt.atme) {
         if (selectBlacklists(groupId).includes(userId)) {
-          console.log(pc.cyan('在黑名单'));
+          console.log(pc.cyan("在黑名单"));
           return;
         }
         createGenshinAvatar(evt);
@@ -63,7 +59,7 @@ export class GroupEvent extends AbstractEvent {
         //来一首诗
         getPoetry(evt);
         //词典
-        getXiaojiDict(evt)
+        getXiaojiDict(evt);
         // 一些对话
         createDialog(evt);
         createVersionAction(evt);

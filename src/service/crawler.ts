@@ -14,7 +14,7 @@ export async function getCharacterAvatar(): Promise<Avatar[]> {
     "https://bbs.mihoyo.com/ys/obc/channel/map/189/25?bbs_presentation_style=no_header",
     {
       waitUntil: "networkidle2",
-    }
+    },
   );
 
   let divs = (await page.$$eval(".collection-avatar__item", (e) => {

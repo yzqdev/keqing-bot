@@ -1,3 +1,5 @@
+import type { Client } from "icqq";
+
 export interface Conf {
   /**
    * qq
@@ -42,10 +44,10 @@ export interface XiaojiDefinition {
   comment_count: number;
   commentable: boolean;
   content: string;
-  created_at:string;
+  created_at: string;
   definition_count: number;
   deletable: boolean;
-  dislike_count:number
+  dislike_count: number;
 }
 export interface XiaojiDict {
   albums: [];
@@ -55,4 +57,7 @@ export interface XiaojiDict {
   tags: [];
   topics: [];
   users: [];
+}
+export interface MyClient extends Client {
+  uin: number;
 }

@@ -3,7 +3,7 @@ import { db } from "@/util/sql";
 export function checkBlackExists(groupId: number, userId: number) {
   return db
     .prepare(
-      `select group_id from blacklist where user_id = ${userId} and group_id=${groupId}`
+      `select group_id from blacklist where user_id = ${userId} and group_id=${groupId}`,
     )
     .pluck()
     .get();

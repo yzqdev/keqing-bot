@@ -1,4 +1,4 @@
-import { Client } from "oicq";
+import { Client } from "icqq";
 
 import { CronJob } from "./cronJob";
 

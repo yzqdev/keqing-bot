@@ -1,4 +1,4 @@
-import { segment, Client } from "oicq";
+import { segment, Client } from "icqq";
 
 import { AbstractEvent } from "./abstractEvent";
 

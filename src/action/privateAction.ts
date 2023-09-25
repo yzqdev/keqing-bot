@@ -1,11 +1,11 @@
 import { commonReg } from "@/constant/reg";
-import { addNote, delNote, Note, selectNote } from "@/util/note";
-import { PrivateMessageEvent, segment } from "oicq";
+import { addNote, delNote, type Note, selectNote } from "@/util/note";
+import { type PrivateMessageEvent, segment } from "icqq";
 
 export function privateHello(
   userId: number,
   msg: string,
-  evt: PrivateMessageEvent
+  evt: PrivateMessageEvent,
 ) {
   evt.reply(["不要骚扰我啦!", segment.face(38)]);
 }
@@ -20,7 +20,7 @@ export function privateHello(
 export function addPrivateNote(
   userId: number,
   msg: string,
-  evt: PrivateMessageEvent
+  evt: PrivateMessageEvent,
 ) {
   if (commonReg.addNote.test(msg)) {
     console.log(userId);
@@ -39,18 +39,22 @@ export function addPrivateNote(
  * @param evt
  * @returns
  */
-export function getPrivateNote(userId: number, msg: string, evt: PrivateMessageEvent) {
+export function getPrivateNote(
+  userId: number,
+  msg: string,
+  evt: PrivateMessageEvent,
+) {
   if (commonReg.getNote.test(msg)) {
     let notes = selectNote(userId) as Note[];
-  if(notes){
+    if (notes) {
       let head = "id,tag,content\n";
       let res = notes.map((item) => {
         return `${item.id},${item.tag},${item.content}`;
       });
       evt.reply(head + res.join("\n"));
-  }else{
-    evt.reply("对不起,您没有记事")
-  }
+    } else {
+      evt.reply("对不起,您没有记事");
+    }
     return;
   }
 }
@@ -61,7 +65,11 @@ export function getPrivateNote(userId: number, msg: string, evt: PrivateMessageE
  * @param evt
  * @returns
  */
-export function delPrivateNote(userId: number, msg: string, evt: PrivateMessageEvent) {
+export function delPrivateNote(
+  userId: number,
+  msg: string,
+  evt: PrivateMessageEvent,
+) {
   if (commonReg.delNote.test(msg)) {
     let [_, noticeId] = msg.split("#", 2);
     delNote(+noticeId!, userId);

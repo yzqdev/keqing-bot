@@ -1,8 +1,8 @@
 import got from "got";
-import { PixivItem, PixivRes, RealPixiv } from "@/interface/pixiv";
+import type { PixivItem, PixivRes, RealPixiv } from "@/interface/pixiv";
 import { commonVar } from "@/constant/constants";
 export async function publicData(
-  offsetIndex: number = 1
+  offsetIndex: number = 1,
 ): Promise<PixivItem[]> {
   console.log("获取数据");
 
@@ -56,7 +56,7 @@ export async function genshinData(pageNum: number = 1) {
 export async function realPixiv() {
   //r18默认为false
   let img = (await got(
-    `https://api.lolicon.app/setu/v2?tag=${commonVar.tag}`
+    `https://api.lolicon.app/setu/v2?tag=${commonVar.tag}`,
   ).json()) as RealPixiv;
   let singleImg = img.data[0]!.urls.original;
   return singleImg;

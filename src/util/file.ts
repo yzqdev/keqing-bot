@@ -21,7 +21,12 @@ export const ensureDirExistSync = (dirPath: string): void => {
  */
 export function readVendorFile(dirPath: string = "", fileName: string) {
   return readFileSync(
-    join(dirname(fileURLToPath(import.meta.url)), "../files", dirPath, fileName)
+    join(
+      dirname(fileURLToPath(import.meta.url)),
+      "../files",
+      dirPath,
+      fileName,
+    ),
   );
 }
 

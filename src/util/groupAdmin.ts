@@ -8,7 +8,7 @@ export function selectAllAdmins(groupId: number) {
 export function checkAdminExists(groupId: number, userId: number) {
   return db
     .prepare(
-      `select group_id from group_admin where user_id = ${userId} and group_id=${groupId}`
+      `select group_id from group_admin where user_id = ${userId} and group_id=${groupId}`,
     )
     .pluck()
     .get();
@@ -18,6 +18,6 @@ export function addAdmin(groupId: number, userId: number) {
 }
 export function removeAdmin(groupId: number, userId: number) {
   db.exec(
-    `delete from group_admin where user_id=${userId} and group_id=${groupId}`
+    `delete from group_admin where user_id=${userId} and group_id=${groupId}`,
   );
 }
