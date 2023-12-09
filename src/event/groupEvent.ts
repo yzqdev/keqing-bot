@@ -20,6 +20,8 @@ import {
   createDialog,
   createVersionAction,
   getXiaojiDict,
+  sendVideo,
+  getWeather,
 } from "@/action/groupAction";
 import { Client, type GroupMessageEvent, type PrivateMessageEvent } from "icqq";
 import { selectSleep } from "@/util/status";
@@ -58,6 +60,9 @@ export class GroupEvent extends AbstractEvent {
         createEmoj(evt);
         //来一首诗
         getPoetry(evt);
+        getWeather(evt, bot)
+        //发送视频
+        sendVideo(evt)
         //词典
         getXiaojiDict(evt);
         // 一些对话

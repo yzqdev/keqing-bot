@@ -6,6 +6,7 @@
     "url": "https://github.com/yzqdev/keqing-bot.git"
   },
   "license": "GPL",
+  "type": "module",
   "author": "yzqdev",
   "main": "bin/cli.mjs",
   "files": [
@@ -23,26 +24,26 @@
     "stop": "pm2 stop bot.json"
   },
   "dependencies": {
-    "better-sqlite3": "^8.6.0",
+    "better-sqlite3": "^9.2.2",
     "cheerio": "1.0.0-rc.12",
     "cli-table3": "^0.6.3",
-    "got": "^13.0.0",
-    "icqq": "^0.5.4",
-    "lowdb": "^6.0.1",
-    "node-cron": "^3.0.2",
+    "got": "^14.0.0",
+    "icqq": "^0.6.5",
+    "lowdb": "^6.1.1",
+    "node-cron": "^3.0.3",
     "picocolors": "^1.0.0",
     "pm2": "^5.3.0",
-    "puppeteer": "^21.3.4",
+    "puppeteer": "^21.6.0",
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "@types/node-cron": "^3.0.9",
-    "@sindresorhus/tsconfig": "^4.0.0",
-    "@types/better-sqlite3": "^7.6.5",
-    "@types/node": "^18.17.19",
-    "esno": "^0.17.0",
-    "prettier": "^3.0.3",
-    "tsup": "^7.2.0",
-    "typescript": "^5.2.2"
+    "@sindresorhus/tsconfig": "^5.0.0",
+    "@types/better-sqlite3": "^7.6.8",
+    "@types/node": "^20.10.4",
+    "@types/node-cron": "^3.0.11",
+    "esno": "^4.0.0",
+    "prettier": "^3.1.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
   }
 }

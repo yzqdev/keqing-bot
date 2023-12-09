@@ -13,3 +13,13 @@ export interface Tongren {
     is_origin: boolean;
   };
 }
+export interface TongrenResponse {
+  datas: TongrenList[];
+}
+export interface TongrenList {
+  title: string;
+  coverImage: {
+    originalPath: string;
+    fileSize: number;
+  };
+}

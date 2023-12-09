@@ -4,11 +4,13 @@ export const mihoyoReg = {
   pixivPublic: /^%推荐(#[0-9]+)?/,
   pixivRank: /^%排行(#[0-9]+)?/,
   tongren: /^%同人$/,
+  beauty: /^%美图$/,
   genshin: /(^%原神(#[0-9]+)?$)|%(涩图|色图|好看|好康|再来一张)/,
 
   cos: /^%cos$/,
   emoj: /^%emoj$/,
   char: /^%角色#[\u4e00-\u9fa5]+/,
+  joke: /笑话/
 };
 export const commonReg = {
   addNote: /^记事#[0-9a-zA-Z\u4e00-\u9fa5]+\.[0-9a-zA-Z\u4e00-\u9fa5]+/,

@@ -2,7 +2,7 @@ import { version } from "../../package.json";
 import pc from "picocolors";
 import { emojs } from "@/constant/mihoyo";
 import { commonReg, mihoyoReg, wallpaperReg } from "@/constant/reg";
-import { getCos, getTongren } from "@/service/mihoyoService";
+import { getCos, getTongren, getTongrenList } from "@/service/mihoyoService";
 import {
   genshinData,
   publicData,
@@ -13,7 +13,7 @@ import { bingApi, paramMap, wallhavenApi } from "@/service/wallpaper";
 import { get360Type, get360TypeMap } from "@/service/360service";
 import { getPup, readVendorFile } from "@/util/file";
 import { randNum } from "@/util/num";
-import { type GroupMessageEvent, segment } from "icqq";
+import { type GroupMessageEvent, segment, Client } from "icqq";
 import { getCharacterAvatar } from "@/service/crawler";
 import { createAtEvent } from "@/action/atAction";
 import type { MemoryUsage, Poetry, XiaojiDict } from "@/interface/global";
@@ -31,6 +31,8 @@ import {
 import { addBlack, checkBlackExists, selectBlacklists } from "@/util/blacklist";
 import { conf } from "@/config";
 import { addNote, delNote, type Note, selectNote } from "@/util/note";
+import { pipeline } from "node:stream/promises";
+import { createWriteStream, existsSync } from "node:fs";
 
 /**
  * trycatch要占一个大括号的位置,算了还是用.catch吧
@@ -60,6 +62,16 @@ export async function createGenshinData(evt: GroupMessageEvent) {
     } catch (err) {
       evt.reply(replyMsg.errMsg(err as Error));
     }
+  }
+}
+export async function createJoke(evt: GroupMessageEvent) {
+  const msg = evt.raw_message;
+
+  try {
+    const res = await got('https://api.vvhan.com/api/joke')
+    evt.reply(res.body)
+  } catch (error) {
+    evt.reply(replyMsg.errMsg(error as Error));
   }
 }
 
@@ -183,15 +195,29 @@ export function createWallhaven(evt: GroupMessageEvent) {
 export function createCos(evt: GroupMessageEvent) {
   let msg = evt.raw_message;
   if (mihoyoReg.cos.test(msg)) {
-    //evt.reply(replyMsg.searchImg);
+ //使用数据库
+
+  //  got
+  //    .get("http://127.0.0.1:8900/api/mihoyo/cos_rand")
+  //    .then((item) => {
+  //      const data: any[] = JSON.parse(item.body).data.image_list;
+  //      const urls = data.slice(0, 4).map((i) => segment.image(i.url));
+  //      evt.reply(urls);
+  //    })
+  //    .catch((err) => {
+  //      evt.reply(replyMsg.errMsg(err));
+  //    });
+ //使用数据库
+    // evt.reply(replyMsg.searchImg);
     getCos()
       .then((res: string[][]) => {
         let randomArtile: string[] = res[randNum(40)]!;
-        evt.reply([
-          ...randomArtile?.map((item) => {
-            return segment.image(item);
-          }),
-        ]);
+        const imgUrls:string[] = randomArtile
+          .slice(0,3)
+          .filter(Boolean) as string[];
+        evt.reply(
+          imgUrls.map(i=>segment.image(i))
+        );
       })
       .catch((err) => {
         evt.reply(replyMsg.errMsg(err));
@@ -210,11 +236,23 @@ export function createTongren(evt: GroupMessageEvent) {
     getTongren()
       .then((res: string[][]) => {
         let randomArtile: string[] = res[randNum(40)]!;
-        evt.reply([
-          ...randomArtile?.map((item) => {
-            return segment.image(item);
-          }),
-        ]);
+        const urls = randomArtile?.slice(0, 4).map((item) => {
+          return segment.image(item);
+        });
+        evt.reply(urls);
+      })
+      .catch((err) => {
+        evt.reply(replyMsg.errMsg(err));
+      });
+  }
+  if (mihoyoReg.beauty.test(msg)) {
+    //evt.reply(replyMsg.searchImg);
+    getTongrenList(randNum(100))
+      .then((res: string[]) => {
+        const urls = res?.slice(0, 2).map((item) => {
+          return segment.image(item);
+        });
+        evt.reply(urls);
       })
       .catch((err) => {
         evt.reply(replyMsg.errMsg(err));
@@ -436,6 +474,63 @@ export async function getPoetry(evt: GroupMessageEvent) {
       evt.reply(res.content);
     } catch (err) {
       evt.reply(replyMsg.errMsg(err as Error));
+    }
+  }
+}
+export async function getWeather(evt: GroupMessageEvent, bot: Client) {
+  const msg = evt.raw_message;
+
+  let userId = evt.sender.user_id;
+  let groupId = evt.group_id;
+
+  let admins = selectAllAdmins(groupId);
+  if (msg.includes('debug')) {
+    let res1: string[] = await getTongrenList(1);
+    let res2: string[] = await getTongrenList(2);
+    let res3: string[] = await getTongrenList(3);
+    let rand = randNum(8);
+    let randomArticle: string = res1[rand]!;
+    let randomArticle1: string = res2[rand]!;
+    let randomArticle2: string = res3[rand]!;
+
+    console.log(res3)
+
+    bot.sendGroupMsg(869464578, [segment.image(randomArticle), segment.image(randomArticle1), segment.image(randomArticle2)]);
+
+  }
+
+}
+export async function sendVideo(evt: GroupMessageEvent) {
+  const msg = evt.raw_message;
+
+  let userId = evt.sender.user_id;
+  let groupId = evt.group_id;
+
+  let admins = selectAllAdmins(groupId);
+  console.log(pc.cyan(admins.join(" ")));
+
+  console.log("发送者" + userId);
+  if (selectBlacklists(groupId).includes(userId)) {
+    evt.reply(["您已被拉黑", segment.at(userId)]);
+    return;
+  }
+  let isAdmin =
+    commonReg.admin.test(String(userId)) || admins.includes(String(userId));
+
+  if (msg.includes("douyin") && isAdmin) {
+    let arr = msg.split("#", 2);
+    if (arr[1]) {
+      const id = arr[1];
+      const videoFs = `./videos/${id}.mp4`;
+
+      if (!existsSync(videoFs)) {
+        const data = await got.get("http://localhost:4000/video?videoId=" + id);
+        const url = JSON.parse(data.body).url;
+        await pipeline(got.stream(url), createWriteStream(videoFs));
+        await evt.reply(segment.video(videoFs));
+      } else {
+        await evt.reply(segment.video(videoFs));
+      }
     }
   }
 }

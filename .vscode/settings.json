@@ -18,6 +18,8 @@
     "menu.selectionForeground": "#23A9F2",
     "menubar.selectionForeground": "#23A9F2",
     "tab.border": "#bdaeae",
+    "tab.activeBackground": "#ffff00",
+    "tab.activeForeground": "#ff00ff",
     "tab.hoverBackground": "#534d4d",
     "activityBar.background": "#1a1a1a",
     "activityBar.foreground": "#e7e7e7",
