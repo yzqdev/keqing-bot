@@ -32,8 +32,8 @@ export function createAtEvent(evt: GroupMessageEvent) {
     return;
   }
   if (mihoyoReg.joke.test(rawMessage)) {
-    createJoke(evt)
-    return
+    createJoke(evt);
+    return;
   }
   createAtNotMatch(evt);
 }

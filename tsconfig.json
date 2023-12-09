@@ -1,18 +1,20 @@
 {
-  //https://www.typescriptlang.org/tsconfig#compilerOptions
-  "extends": "@sindresorhus/tsconfig",
   "compilerOptions": {
+    "sourceMap": true,
     "outDir": "dist",
-    "module": "ESNext",
+    "target": "ES2015",
+    "module": "ES2015",
     "moduleResolution": "Bundler",
-    "target": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
+    "strict": false,
+    "lib": ["esnext"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "verbatimModuleSyntax": true,
-    "allowJs": true,
     "resolveJsonModule": true
   }
 }

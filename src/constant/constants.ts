@@ -13,11 +13,4 @@ export const commonVar = {
   tag: "GenshinImpact|(Genshin Impact)",
 };
 
-export const dontTouchMe: string[] = [
-  "别戳我",
-  "再戳我一下试试",
-  "有完没完了?",
-  "别戳了,崽种!",
-  "再戳我就把你吃掉",
-  "差不多得了😅",
-];
+export const dontTouchMe: string[] = ["别戳我", "再戳我一下试试", "有完没完了?", "别戳了,崽种!", "再戳我就把你吃掉", "差不多得了😅"];

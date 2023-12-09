@@ -1,11 +1,6 @@
 import { Client } from "icqq";
 import { AbstractEvent } from "./abstractEvent";
-import {
-  addPrivateNote,
-  delPrivateNote,
-  getPrivateNote,
-  privateHello,
-} from "@/action/privateAction";
+import { addPrivateNote, delPrivateNote, getPrivateNote, privateHello } from "@/action/privateAction";
 
 export class PrivateEvent extends AbstractEvent {
   public load(bot: Client): void {

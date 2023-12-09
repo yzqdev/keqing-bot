@@ -23,7 +23,7 @@ yarn install
 1.前台运行
 
 ```shell
-yarn build && yarn start 
+yarn build && yarn start
 ```
 
 2.后台运行
@@ -52,6 +52,6 @@ GPL License © 2022 [yzqdev](https://github.com/yzqdev)
 
 ## 鸣谢
 
-- 感谢 JetBrains 提供的免费开源 License：  
+- 感谢 JetBrains 提供的免费开源 License：
 
 ![jetbrains](./res/jetbrains.svg)

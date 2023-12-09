@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,20 +6,12 @@
     <link rel="icon" href="_media/favicon.ico" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="description" content="Description" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
 
     <link rel="stylesheet/less" type="text/css" href="vue.less" />
     <link rel="stylesheet/less" type="text/css" href="code.less" />
-   
- 
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/prismjs@1.28.0/themes/prism-tomorrow.min.css"
-    />
-  
+
+    <link rel="stylesheet" href="https://unpkg.com/prismjs@1.28.0/themes/prism-tomorrow.min.css" />
   </head>
 
   <body class="main-box">
@@ -40,17 +32,9 @@
 
           // 功能4，添加 toc 目录
           var dStr = "";
-          $("#main h2, #main h3, #main h4, #main h5, #main h6").each(
-            function () {
-              $(".toc-box").append(
-                '<li class="toc-' +
-                  this.localName +
-                  '">' +
-                  this.innerHTML +
-                  "</li>"
-              );
-            }
-          );
+          $("#main h2, #main h3, #main h4, #main h5, #main h6").each(function () {
+            $(".toc-box").append('<li class="toc-' + this.localName + '">' + this.innerHTML + "</li>");
+          });
         });
       };
       window.$docsify = {

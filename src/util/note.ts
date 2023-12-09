@@ -6,9 +6,7 @@ export interface Note {
 }
 //group为0代表私聊
 export function addNote(content: string, tag: string, userId: number) {
-  const stmt = db.prepare(
-    "insert into note(id,tag,content,user_id) values(null,?,?,?)",
-  );
+  const stmt = db.prepare("insert into note(id,tag,content,user_id) values(null,?,?,?)");
   stmt.run(tag, content, userId);
 }
 export function selectNote(userId: number) {

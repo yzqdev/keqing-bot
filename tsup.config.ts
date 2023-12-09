@@ -6,7 +6,7 @@ export default defineConfig({
   sourcemap: false,
   minify: true,
   dts: false,
-  format:"esm",
-  ignoreWatch:"data",
+  format: "esm",
+  ignoreWatch: "data",
   clean: true,
 });

@@ -10,7 +10,7 @@ export const mihoyoReg = {
   cos: /^%cos$/,
   emoj: /^%emoj$/,
   char: /^%角色#[\u4e00-\u9fa5]+/,
-  joke: /笑话/
+  joke: /笑话/,
 };
 export const commonReg = {
   addNote: /^记事#[0-9a-zA-Z\u4e00-\u9fa5]+\.[0-9a-zA-Z\u4e00-\u9fa5]+/,

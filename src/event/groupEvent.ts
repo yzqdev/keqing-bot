@@ -60,9 +60,9 @@ export class GroupEvent extends AbstractEvent {
         createEmoj(evt);
         //来一首诗
         getPoetry(evt);
-        getWeather(evt, bot)
+        getWeather(evt, bot);
         //发送视频
-        sendVideo(evt)
+        sendVideo(evt);
         //词典
         getXiaojiDict(evt);
         // 一些对话

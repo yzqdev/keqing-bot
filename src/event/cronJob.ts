@@ -26,25 +26,16 @@ export class CronJob extends AbstractEvent {
       for (let item of conf.preferGroup) {
         bot.sendGroupMsg(item, replyMsg.about12Clock);
 
-        bot.sendGroupMsg(item, [
-          segment.image(randomArticle),
-          segment.image(randomArticle1),
-          segment.image(randomArticle2),
-        ]);
+        bot.sendGroupMsg(item, [segment.image(randomArticle), segment.image(randomArticle1), segment.image(randomArticle2)]);
       }
     });
     cron.schedule("1 1 20 * * *", async () => {
       const res: string[][] = await getCos();
 
-      let randomArtile: string[] = res[randNum(40)]!;
-      const imgUrls: string[] = randomArtile
-        .slice(0, 3)
-        .filter(Boolean) as string[];
+      let randomArtile: string[] = res[randNum(40)]!.length > 0 ? res[randNum(40)]! : res[0]!;
+      const imgUrls: string[] = randomArtile.slice(0, 3).filter(Boolean) as string[];
       for (let item of conf.preferGroup) {
-        bot.sendGroupMsg(
-          item,
-          `${new Date().getHours()}点了,来看一些cos作品吧`,
-        );
+        bot.sendGroupMsg(item, `${new Date().getHours()}点了,来看一些cos作品吧`);
 
         bot.sendGroupMsg(
           item,

@@ -4,30 +4,23 @@
     <meta charset="UTF-8" />
     <title>help</title>
 
-    <link
-      rel="stylesheet"
-      href="https://fastly.jsdelivr.net/npm/element-plus/dist/index.css"
-    />
+    <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/element-plus/dist/index.css" />
     <script src="https://fastly.jsdelivr.net/npm/vue"></script>
     <script src="https://fastly.jsdelivr.net/npm/element-plus"></script>
     <script src="https://cdn.tailwindcss.com/"></script>
     <style>
-      html, body {
-          font-family: "Microsoft YaHei UI", serif;
+      html,
+      body {
+        font-family: "Microsoft YaHei UI", serif;
       }
     </style>
   </head>
   <body>
     <div id="app">
-      <div class="m-2 rounded bg-slate-100 shadow min-h-min ">
-        <div class="text-center text-slate-600 pt-4">
-          其中#数字代表查询第几页,如#3就是查询第三页
-        </div>
+      <div class="m-2 rounded bg-slate-100 shadow min-h-min">
+        <div class="text-center text-slate-600 pt-4">其中#数字代表查询第几页,如#3就是查询第三页</div>
         <div class="grid grid-cols-2">
-          <article
-            v-for="item in tableData"
-            class="m-2 bg-white h-16 grid grid-rows-2 p-2 justify-center"
-          >
+          <article v-for="item in tableData" class="m-2 bg-white h-16 grid grid-rows-2 p-2 justify-center">
             <div class="text-black text-center font-bold">{{item.cmd}}</div>
             <div class="text-slate-600 text-center">{{item.intro}}</div>
           </article>
@@ -35,95 +28,95 @@
       </div>
     </div>
     <script>
-
       // 使用setup
       const { createApp, reactive, toRefs } = Vue;
       const data = reactive({
         state: 12,
         tableData: [
           {
-            "cmd": "%帮助",
-            "intro": "显示帮助内容"
+            cmd: "%帮助",
+            intro: "显示帮助内容",
           },
           {
-            "cmd": "%admin",
-            "intro": "显示管理员帮助内容"
+            cmd: "%admin",
+            intro: "显示管理员帮助内容",
           },
           {
-            "cmd": "%cli#(help/admin)",
-            "intro": "生成帮助菜单"
+            cmd: "%cli#(help/admin)",
+            intro: "生成帮助菜单",
           },
           {
-            "cmd": "%emoj",
-            "intro": "显示随机表情"
+            cmd: "%emoj",
+            intro: "显示随机表情",
           },
           {
-            "cmd": "%同人",
-            "intro": "显示米游社同人作品"
+            cmd: "%同人",
+            intro: "显示米游社同人作品",
           },
           {
-            "cmd": "%cos",
-            "intro": "显示米游社cos作品"
+            cmd: "%cos",
+            intro: "显示米游社cos作品",
           },
           {
-            "cmd": "%原神#4",
-            "intro": "显示pixiv原神相关作品"
+            cmd: "%原神#4",
+            intro: "显示pixiv原神相关作品",
           },
           {
-            "cmd": "%排行#9",
-            "intro": "显示pixiv排行榜第9页内容"
+            cmd: "%排行#9",
+            intro: "显示pixiv排行榜第9页内容",
           },
           {
-            "cmd": "%推荐#3",
-            "intro": "显示pixiv推荐第3页内容"
+            cmd: "%推荐#3",
+            intro: "显示pixiv推荐第3页内容",
           },
           {
-            "cmd": "%必应壁纸#3",
-            "intro": "显示必应壁纸第3页内容"
+            cmd: "%必应壁纸#3",
+            intro: "显示必应壁纸第3页内容",
           },
           {
-            "cmd": "%360壁纸",
-            "intro": "显示360壁纸命令"
+            cmd: "%360壁纸",
+            intro: "显示360壁纸命令",
           },
           {
-            "cmd": "%赛博朋克 ",
-            "intro": "显示赛博朋克壁纸"
+            cmd: "%赛博朋克 ",
+            intro: "显示赛博朋克壁纸",
           },
           {
-            "cmd": "%风景",
-            "intro": " 显示风景壁纸"
+            cmd: "%风景",
+            intro: " 显示风景壁纸",
           },
           {
-            "cmd": "%动漫女孩",
-            "intro": "显示动漫女孩"
+            cmd: "%动漫女孩",
+            intro: "显示动漫女孩",
           },
           {
-            "cmd": "%数字图像",
-            "intro": "显示数字图像"
+            cmd: "%数字图像",
+            intro: "显示数字图像",
           },
           {
-            "cmd": "%角色#刻晴",
-            "intro": "显示刻晴头像"
+            cmd: "%角色#刻晴",
+            intro: "显示刻晴头像",
           },
-           {
-                  "cmd": "记事#内容.标签",
-                  "intro": "添加一个记事"
-              },
-                 {
-                  "cmd": "查记事",
-                  "intro": "查看自己的记事"
-              },    {
-                  "cmd": "删记事#记事id",
-                  "intro": "删除自己的记事"
-              },
-        ]
+          {
+            cmd: "记事#内容.标签",
+            intro: "添加一个记事",
+          },
+          {
+            cmd: "查记事",
+            intro: "查看自己的记事",
+          },
+          {
+            cmd: "删记事#记事id",
+            intro: "删除自己的记事",
+          },
+        ],
       });
       const app = createApp({
         setup() {
           return {
-            ...toRefs(data)
+            ...toRefs(data),
           };
-        }
+        },
       });
       app.use(ElementPlus);
       app.mount("#app");
