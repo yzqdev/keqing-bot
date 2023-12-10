@@ -23,7 +23,9 @@ import { conf } from "@/config";
 import { addNote, delNote, type Note, selectNote } from "@/util/note";
 import { pipeline } from "node:stream/promises";
 import { createWriteStream, existsSync } from "node:fs";
-
+import { defaultLog } from "@/util/logger";
+import { fileURLToPath } from "url";
+const logger=defaultLog(fileURLToPath(import.meta.url))
 /**
  * trycatch要占一个大括号的位置,算了还是用.catch吧
  * @param evt
@@ -285,12 +287,12 @@ export async function createCli(evt: GroupMessageEvent) {
   if (commonReg.cli.test(msg)) {
     let cliArr = msg.split("#", 2);
     if (cliArr[1] == "help") {
-      console.log("生成帮助文件");
+      logger.info("生成帮助文件");
       await genHelp();
       evt.reply(replyMsg.cmdComplete);
     }
     if (cliArr[1] == "admin") {
-      console.log("生成admin指令");
+      logger.info("生成admin指令");
       await genAdmin();
       evt.reply(replyMsg.cmdComplete);
     }
@@ -332,17 +334,17 @@ export function createAtAction(evt: GroupMessageEvent) {
     let groupId = evt.group_id;
     let param = msg.split("#", 2);
     let admins = selectAllAdmins(groupId);
-    console.log(pc.cyan(admins.join(" ")));
+    logger.info(pc.cyan(admins.join(" ")));
 
-    console.log("发送者" + userId);
+    logger.info("发送者" + userId);
     if (selectBlacklists(groupId).includes(userId)) {
       evt.reply(["您已被拉黑", segment.at(userId)]);
       return;
     }
     let isAdmin = commonReg.admin.test(String(userId)) || admins.includes(String(userId));
-    console.log(`数据库是否存在:${admins.includes(userId)}`);
-    console.log(`管理员?${isAdmin}`);
-    console.log(msg);
+    logger.info(`数据库是否存在:${admins.includes(userId)}`);
+    logger.info(`管理员?${isAdmin}`);
+    logger.info(msg);
     if (isAdmin) {
       let flag = selectStatus(groupId);
       if (commonReg.sleep.test(msg)) {
@@ -358,7 +360,7 @@ export function createAtAction(evt: GroupMessageEvent) {
         }
         evt.reply("已暂停");
 
-        console.log("是否有group", flag);
+        logger.info("是否有group", flag);
         if (flag) {
           setStatus(groupId, true);
         } else {
@@ -378,7 +380,7 @@ export function createAtAction(evt: GroupMessageEvent) {
       }
       if (commonReg.setAdmin.test(msg)) {
         let adminFlag = checkAdminExists(groupId, +param[1]!);
-        console.log("setadmin 存在?" + adminFlag);
+        logger.info("setadmin 存在?" + adminFlag);
         if (adminFlag) {
           evt.reply(`已设置${param[1]}为机器人管理员`);
         } else {
@@ -461,7 +463,7 @@ export async function getWeather(evt: GroupMessageEvent, bot: Client) {
     let randomArticle1: string = res2[rand]!;
     let randomArticle2: string = res3[rand]!;
 
-    console.log(res3);
+    logger.info(res3);
 
     bot.sendGroupMsg(869464578, [segment.image(randomArticle), segment.image(randomArticle1), segment.image(randomArticle2)]);
   }
@@ -473,9 +475,9 @@ export async function sendVideo(evt: GroupMessageEvent) {
   let groupId = evt.group_id;
 
   let admins = selectAllAdmins(groupId);
-  console.log(pc.cyan(admins.join(" ")));
+  logger.info(pc.cyan(admins.join(" ")));
 
-  console.log("发送者" + userId);
+  logger.info("发送者" + userId);
   if (selectBlacklists(groupId).includes(userId)) {
     evt.reply(["您已被拉黑", segment.at(userId)]);
     return;
@@ -528,7 +530,7 @@ export async function createRealPixiv(evt: GroupMessageEvent) {
   if (mihoyoReg.genshin.test(msg)) {
     try {
       let img = await realPixiv();
-      console.log(`获取的图片${img}`);
+      logger.info(`获取的图片${img}`);
       evt.reply(segment.image(img));
     } catch (e) {
       evt.reply(replyMsg.errMsg(e as Error));
@@ -542,7 +544,7 @@ export async function createRealPixiv(evt: GroupMessageEvent) {
  */
 export function createDialog(evt: GroupMessageEvent) {
   if (evt.raw_message == "hhh") {
-    console.log("hhh");
+    logger.info("hhh");
     evt.reply("笑什么笑");
   }
 }
@@ -551,8 +553,8 @@ export function createVersionAction(evt: GroupMessageEvent) {
     const used: MemoryUsage = process.memoryUsage();
     let mem: number = Math.round((used.rss / 1024 / 1024) * 100) / 100;
 
-    console.log("mem=>");
-    console.log(mem);
+    logger.info("mem=>");
+    logger.info(mem);
     let versionInfo = `版本:${version}\n使用内存:${mem}MB`;
     evt.group.sendMsg(versionInfo);
   }
@@ -567,10 +569,10 @@ export function createVersionAction(evt: GroupMessageEvent) {
  */
 export function addGroupNote(userId: number, msg: string, evt: GroupMessageEvent) {
   if (commonReg.addNote.test(msg)) {
-    console.log(userId);
+    logger.info(userId);
     let noteStr = msg.split("#", 2);
     let [content, tag] = noteStr[1]?.split(".", 2)!;
-    console.log(content, tag);
+    logger.info(content, tag);
     addNote(content!, tag!, userId);
     evt.reply("完成");
     return;

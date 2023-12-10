@@ -2,8 +2,8 @@
   "compilerOptions": {
     "sourceMap": true,
     "outDir": "dist",
-    "target": "ES2015",
-    "module": "ES2015",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "Bundler",
     "baseUrl": ".",
     "paths": {

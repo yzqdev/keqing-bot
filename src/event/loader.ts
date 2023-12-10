@@ -1,6 +1,6 @@
 import { Client } from "icqq";
 
-import { CronJob } from "./cronJob";
+import {   CronEvent } from "./cronEvent";
 
 import { PrivateEvent } from "./privateEvent";
 import { RequestEvent } from "./requestEvent";
@@ -12,7 +12,7 @@ export class Loader {
   public static loader(bot: Client) {
     new OnlineEvent().load(bot);
     new GroupEvent().load(bot);
-    new CronJob().load(bot);
+    new CronEvent().load(bot);
     new RequestEvent().load(bot);
     new NoticeEvent().load(bot);
     new PrivateEvent().load(bot);
