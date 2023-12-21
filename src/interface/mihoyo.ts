@@ -3,6 +3,7 @@ export interface TongrenItem {
     images: string[];
   };
 }
+
 export interface Tongren {
   retcode: string;
   message: string;
@@ -21,5 +22,20 @@ export interface TongrenList {
   coverImage: {
     originalPath: string;
     fileSize: number;
+  };
+}
+export interface ComicsItem{
+  post_id:number
+  pic:{
+    url:string
+  }
+  type:string
+}
+export interface Comics {
+  retcode: string;
+  message: string;
+  data: {
+    fan_arts: ComicsItem[];
+    has_more:boolean
   };
 }

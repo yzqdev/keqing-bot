@@ -2,12 +2,12 @@ import { version } from "../../package.json";
 import pc from "picocolors";
 import { emojs } from "@/constant/mihoyo";
 import { commonReg, mihoyoReg, wallpaperReg } from "@/constant/reg";
-import { getCos, getTongren, getTongrenList } from "@/service/mihoyoService";
+import { getComics, getCos, getTongren, getTongrenList } from "@/service/mihoyoService";
 import { genshinData, publicData, rankData, realPixiv } from "@/service/pixivService";
 import { bingApi, paramMap, wallhavenApi } from "@/service/wallpaper";
 import { get360Type, get360TypeMap } from "@/service/360service";
 import { getPup, readVendorFile } from "@/util/file";
-import { randNum } from "@/util/num";
+import { getUniqueRandomInt, randNum } from "@/util/num";
 import { type GroupMessageEvent, segment, Client } from "icqq";
 import { getCharacterAvatar } from "@/service/crawler";
 import { createAtEvent } from "@/action/atAction";
@@ -200,7 +200,20 @@ export function createCos(evt: GroupMessageEvent) {
       });
   }
 }
-
+export async function createComics(evt: GroupMessageEvent) {
+ const msg = evt.raw_message;
+ if (mihoyoReg.comics.test(msg)) {
+   try {
+     const res: string[] = await getComics();
+     const arr=getUniqueRandomInt(0,res.length,2)
+     const imgUrl = [res[ arr[0]],res[arr[1]??1]];
+     evt.reply(imgUrl.map(i=>segment.image(i)));
+   } catch (error) {
+        evt.reply(replyMsg.errMsg(error));
+   }
+ }
+ 
+}
 /**
  * 米游社同人
  * @param evt

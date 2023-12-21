@@ -8,6 +8,7 @@ export const mihoyoReg = {
   genshin: /(^%原神(#[0-9]+)?$)|%(涩图|色图|好看|好康|再来一张)/,
 
   cos: /^%cos$/,
+  comics: /^%漫画$/,
   emoj: /^%emoj$/,
   char: /^%角色#[\u4e00-\u9fa5]+/,
   joke: /笑话/,

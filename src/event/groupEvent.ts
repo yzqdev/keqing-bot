@@ -22,6 +22,7 @@ import {
   getXiaojiDict,
   sendVideo,
   getWeather,
+  createComics,
 } from "@/action/groupAction";
 import { Client, type GroupMessageEvent, type PrivateMessageEvent } from "icqq";
 import { selectSleep } from "@/util/status";
@@ -76,6 +77,7 @@ export class GroupEvent extends AbstractEvent {
         createWallhaven(evt);
         //显示cos图片
         createCos(evt);
+        createComics(evt)
         //同人图片
         createTongren(evt);
         // 回复表情

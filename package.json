@@ -16,8 +16,9 @@
   "scripts": {
     "back": "tsup&&pm2 restart bot.json",
     "build": "tsup",
+    "unbuild": "unbuild",
     "dev": "esno src/index.ts",
-    "devbuild": "tsup --config tsup.dev.ts && node bin/cli.mjs",
+    "devbuild": "tsup --config tsup.dev.ts",
     "lint": "prettier --write src/**/*.{ts,js} files/**/*.{html,ts,js,json}",
     "start": "node bin/cli.mjs",
     "start:build": "tsup&&node bin/cli.mjs",
@@ -29,22 +30,23 @@
     "cli-table3": "^0.6.3",
     "cron": "^3.1.6",
     "got": "^14.0.0",
-    "icqq": "^0.6.5",
+    "icqq": "^0.6.6",
     "lowdb": "^6.1.1",
     "picocolors": "^1.0.0",
     "pm2": "^5.3.0",
-    "puppeteer": "^21.6.0",
+    "puppeteer": "^21.6.1",
     "timeago.js": "^4.0.2",
     "winston": "^3.11.0"
   },
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
     "@types/better-sqlite3": "^7.6.8",
-    "@types/node": "^20.10.4",
+    "@types/node": "^20.10.5",
     "@types/node-cron": "^3.0.11",
     "esno": "^4.0.0",
-    "prettier": "^3.1.0",
+    "prettier": "^3.1.1",
     "tsup": "^8.0.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "unbuild": "^2.0.0"
   }
 }

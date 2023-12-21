@@ -1,5 +1,5 @@
 import got from "got";
-import type { Tongren, TongrenResponse } from "@/interface/mihoyo";
+import type { Comics, Tongren, TongrenResponse } from "@/interface/mihoyo";
 const headers = {
   "user-agent": `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36`,
 };
@@ -41,6 +41,32 @@ export async function getCos(): Promise<string[][]> {
       }
     })
     .filter(Boolean) as string[][];
+   
+  return res;
+}
+/**
+ * 漫画接口
+ * @returns 漫画
+ */
+export async function getComics(): Promise<string[]> {
+  const { data } = (await got(
+    "https://hk4e-api.mihoyo.com/event/contenthub/v1/fan_arts?type=FA_COMIC&page=1&size=50&badge_uid=167600000&badge_region=cn_gf01&game_biz=hk4e_cn&lang=zh-cn",
+    {
+      headers: headers,
+    },
+  ).json()) as Comics;
+
+  const res = data.fan_arts
+    .map((item) => {
+      if (item.pic.url) {
+        return item.pic.url
+      }
+        else{
+          return false
+        }
+      
+    })
+    .filter(Boolean) as string[];
    
   return res;
 }

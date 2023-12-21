@@ -5,8 +5,8 @@ import {   CronEvent } from "./cronEvent";
 import { PrivateEvent } from "./privateEvent";
 import { RequestEvent } from "./requestEvent";
 import { GroupEvent } from "./groupEvent";
-import { OnlineEvent } from "@/event/onlineEvent";
-import { NoticeEvent } from "@/event/noticeEvent";
+import { OnlineEvent } from "./onlineEvent";
+import { NoticeEvent } from "./noticeEvent";
 
 export class Loader {
   public static loader(bot: Client) {

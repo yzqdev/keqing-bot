@@ -3,8 +3,8 @@ import { segment, Client } from "icqq";
 import { AbstractEvent } from "./abstractEvent";
 
 import { CronJob } from "cron";
-import { getCos, getTongren, getTongrenList } from "@/service/mihoyoService";
-import { randNum } from "@/util/num";
+import { getComics, getCos, getTongren, getTongrenList } from "@/service/mihoyoService";
+import { getUniqueRandomInt, randNum } from "@/util/num";
 import { conf } from "@/config";
 import { replyMsg } from "@/constant/constants";
 import { createGenshinData } from "@/action/groupAction";
@@ -52,7 +52,21 @@ export class CronEvent extends AbstractEvent {
       );
     }
    });
+   const eighteenClockJob = new CronJob("1 0 18 * * *", async () => {
+  const res: string[]  = await getComics();
+     const arr = getUniqueRandomInt(0, res.length, 2);
+     const imgUrl = [res[arr[0]], res[arr[1] ?? 1]];
+      for (let item of conf.preferGroup) {
+        bot.sendGroupMsg(
+          item,
+          `${new Date().getHours()}点了,来看漫画吧`,
+        );
+
+        bot.sendGroupMsg(item, imgUrl.map(i=>segment.image(i)));
+      }
+   });
     noonJob.start();
     afternoonJob.start();
+    eighteenClockJob.start();
   }
 }
