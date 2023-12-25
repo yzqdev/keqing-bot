@@ -1,8 +1,16 @@
 import { fileURLToPath } from "node:url";
 import winston, { format, createLogger, transports } from "winston";
 const { combine, timestamp, label, printf, colorize } = format;
-
-export const defaultLog = (filename = '__filename') =>
+import DailyRotateFile from "winston-daily-rotate-file";
+const transport: DailyRotateFile = new DailyRotateFile({
+  filename: "keqing-%DATE%.log",
+  datePattern: "YYYY-MM-DD",
+  zippedArchive: true,
+  maxSize: "20m",
+  maxFiles: "14d",
+  dirname:"log"
+});
+export const defaultLog = (filename = "__filename") =>
   createLogger({
     format: format.combine(
       colorize({ all: true }),
@@ -11,8 +19,8 @@ export const defaultLog = (filename = '__filename') =>
       // format.align(),
       format.printf(
         (info) =>
-          `[${info.label}] ${info.timestamp}  ${info.level} : ${info.message}`,
+          ` ${info.timestamp} [${info.label}] ${info.level} : ${info.message}`,
       ),
     ),
-    transports: [new transports.Console()],
+    transports: [new transports.Console(), transport],
   });

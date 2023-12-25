@@ -5,6 +5,12 @@
 export function randNum(limit: number): number {
   return Math.floor(Math.random() * limit);
 }
+/**
+ * 获取一个指定范围内的随机整数
+ * @param min - 最小值（包含）
+ * @param max - 最大值（不包含）
+ * @returns 随机整数
+ */
 export function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
