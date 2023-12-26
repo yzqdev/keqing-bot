@@ -9,7 +9,12 @@ import { conf } from "@/config";
 import { replyMsg } from "@/constant/constants";
 import { createGenshinData } from "@/action/groupAction";
 import { genshinData } from "@/service/pixivService";
-
+import { defaultLog } from "@/util/logger";
+import { fileURLToPath } from "node:url";
+import { relative } from "node:path";
+const logger = defaultLog(
+  relative(process.cwd(), fileURLToPath(import.meta.url)),
+);
 export class CronEvent extends AbstractEvent {
   load(bot: Client) {
     const noonJob = new CronJob("1 1 12 * * *",async () => {
@@ -22,6 +27,10 @@ export class CronEvent extends AbstractEvent {
  let randomArticle1 = res1[randNum(res1.length)]!.original_url;
  let randomArticle2 = res2[randNum(res2.length)]!.original_url;
  let randomArticle3 = res3[randNum(res3.length)]!.original_url;
+ logger.info('中午12点同人')
+ logger.info(res1 )
+ logger.info(res2 )
+ logger.info(res3 )
  for (let item of conf.preferGroup) {
    bot.sendGroupMsg(item, replyMsg.about12Clock);
 
@@ -34,7 +43,8 @@ export class CronEvent extends AbstractEvent {
     });
    const afternoonJob = new CronJob("1 0 20 * * *",async  () => {
     const res: string[][] = await getCos();
-
+logger.info("20点cos图片")
+logger.info(res)
     let randomArtile: string[] =
       res[randNum(res.length)].length > 0
         ? res[randNum(res.length)]
@@ -54,6 +64,7 @@ export class CronEvent extends AbstractEvent {
    });
    const eighteenClockJob = new CronJob("1 0 18 * * *", async () => {
   const res: string[]  = await getComics();
+  
      const arr = getUniqueRandomInt(0, res.length, 2);
      const imgUrl = [res[arr[0]], res[arr[1] ?? 1]];
       for (let item of conf.preferGroup) {

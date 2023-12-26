@@ -25,7 +25,10 @@ import { pipeline } from "node:stream/promises";
 import { createWriteStream, existsSync } from "node:fs";
 import { defaultLog } from "@/util/logger";
 import { fileURLToPath } from "url";
-const logger=defaultLog(fileURLToPath(import.meta.url))
+import { relative } from "node:path";
+const logger = defaultLog(
+  relative(process.cwd(), fileURLToPath(import.meta.url)),
+);
 /**
  * trycatch要占一个大括号的位置,算了还是用.catch吧
  * @param evt
@@ -39,6 +42,8 @@ export async function createGenshinData(evt: GroupMessageEvent) {
       if (msgArr[1]) {
         const img = await genshinData(+msgArr[1]);
         let res = img[randNum(30)];
+        logger.info("createGenshinData");
+        logger.info(res);
         evt.reply([`title:${res?.title}\npid:${res?.picture_id}\n`, segment.image(res?.original_url!)]);
       } else {
         const img = await genshinData(randNum(10));
@@ -74,6 +79,8 @@ export function createPixivPublic(evt: GroupMessageEvent) {
       publicData(+msgArr[1])
         .then((img) => {
           let res = img[randNum(16)];
+          logger.info("createPixivPublic");
+          logger.info(res);
           evt.reply([`title:${res?.title}\npid:${res?.picture_id}\n`, segment.image(res?.original_url!)]);
         })
         .catch((err) => {
@@ -96,6 +103,8 @@ export function createPixivRanking(evt: GroupMessageEvent) {
       rankData(+msgArr[1])
         .then((img) => {
           let res = img[randNum(16)];
+          logger.info("createPixivRanking");
+          logger.info(res);
           evt.reply([`title:${res?.title}\npid:${res?.picture_id}\n`, segment.image(res?.original_url!)]);
         })
         .catch((err) => {
@@ -193,6 +202,8 @@ export function createCos(evt: GroupMessageEvent) {
       .then((res: string[][]) => {
         let randomArtile: string[] = res[randNum(40)]!;
         const imgUrls: string[] = randomArtile.slice(0, 3).filter(Boolean) as string[];
+        logger.info("createCos");
+        logger.info(res)
         evt.reply(imgUrls.map((i) => segment.image(i)));
       })
       .catch((err) => {
@@ -205,6 +216,8 @@ export async function createComics(evt: GroupMessageEvent) {
  if (mihoyoReg.comics.test(msg)) {
    try {
      const res: string[] = await getComics();
+     logger.info("createComics");
+     logger.info(res)
      const arr=getUniqueRandomInt(0,res.length,2)
      const imgUrl = [res[ arr[0]],res[arr[1]??1]];
      evt.reply(imgUrl.map(i=>segment.image(i)));
