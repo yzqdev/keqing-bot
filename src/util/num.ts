@@ -21,15 +21,14 @@ export function getRandomInt(min, max) {
  * @param min 最小值
  * @param max 最大值
  * @param count 随机数数量
- * @returns 
+ * @returns
  */
-export function getUniqueRandomInt(min=0, max=20,count=3):number[] {
+export function getUniqueRandomInt(min = 0, max = 20, count = 3): number[] {
   const randoms = new Set();
 
   while (randoms.size < count) {
     const random = getRandomInt(min, max);
     randoms.add(random);
-     
   }
 
   return Array.from(randoms) as number[];

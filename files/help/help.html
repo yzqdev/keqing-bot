@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <title>help</title>
 
-    <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/element-plus/dist/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://fastly.jsdelivr.net/npm/element-plus/dist/index.css"
+    />
     <script src="https://fastly.jsdelivr.net/npm/vue"></script>
     <script src="https://fastly.jsdelivr.net/npm/element-plus"></script>
     <script src="https://cdn.tailwindcss.com/"></script>
@@ -18,9 +21,14 @@
   <body>
     <div id="app">
       <div class="m-2 rounded bg-slate-100 shadow min-h-min">
-        <div class="text-center text-slate-600 pt-4">其中#数字代表查询第几页,如#3就是查询第三页</div>
+        <div class="text-center text-slate-600 pt-4">
+          其中#数字代表查询第几页,如#3就是查询第三页
+        </div>
         <div class="grid grid-cols-2">
-          <article v-for="item in tableData" class="m-2 bg-white h-16 grid grid-rows-2 p-2 justify-center">
+          <article
+            v-for="item in tableData"
+            class="m-2 bg-white h-16 grid grid-rows-2 p-2 justify-center"
+          >
             <div class="text-black text-center font-bold">{{item.cmd}}</div>
             <div class="text-slate-600 text-center">{{item.intro}}</div>
           </article>

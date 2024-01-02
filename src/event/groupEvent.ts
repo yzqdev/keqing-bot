@@ -77,7 +77,7 @@ export class GroupEvent extends AbstractEvent {
         createWallhaven(evt);
         //显示cos图片
         createCos(evt);
-        createComics(evt)
+        createComics(evt);
         //同人图片
         createTongren(evt);
         // 回复表情

@@ -20,7 +20,14 @@ export const ensureDirExistSync = (dirPath: string): void => {
  * @param fileName 文件名称
  */
 export function readVendorFile(dirPath: string = "", fileName: string) {
-  return readFileSync(join(dirname(fileURLToPath(import.meta.url)), "../files", dirPath, fileName));
+  return readFileSync(
+    join(
+      dirname(fileURLToPath(import.meta.url)),
+      "../files",
+      dirPath,
+      fileName,
+    ),
+  );
 }
 
 export function getPup(dirPath: string, fileName: string) {

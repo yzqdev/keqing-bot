@@ -1,6 +1,6 @@
 import { Client } from "icqq";
 
-import {   CronEvent } from "./cronEvent";
+import { CronEvent } from "./cronEvent";
 
 import { PrivateEvent } from "./privateEvent";
 import { RequestEvent } from "./requestEvent";

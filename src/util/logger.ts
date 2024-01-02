@@ -8,7 +8,7 @@ const transport: DailyRotateFile = new DailyRotateFile({
   zippedArchive: true,
   maxSize: "20m",
   maxFiles: "14d",
-  dirname:"log"
+  dirname: "log",
 });
 export const defaultLog = (filename = "__filename") =>
   createLogger({

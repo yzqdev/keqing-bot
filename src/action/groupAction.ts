@@ -2,8 +2,18 @@ import { version } from "../../package.json";
 import pc from "picocolors";
 import { emojs } from "@/constant/mihoyo";
 import { commonReg, mihoyoReg, wallpaperReg } from "@/constant/reg";
-import { getComics, getCos, getTongren, getTongrenList } from "@/service/mihoyoService";
-import { genshinData, publicData, rankData, realPixiv } from "@/service/pixivService";
+import {
+  getComics,
+  getCos,
+  getTongren,
+  getTongrenList,
+} from "@/service/mihoyoService";
+import {
+  genshinData,
+  publicData,
+  rankData,
+  realPixiv,
+} from "@/service/pixivService";
 import { bingApi, paramMap, wallhavenApi } from "@/service/wallpaper";
 import { get360Type, get360TypeMap } from "@/service/360service";
 import { getPup, readVendorFile } from "@/util/file";
@@ -17,7 +27,12 @@ import { readFile } from "fs/promises";
 import { genAdmin, genHelp } from "@/cli/help";
 import { replyMsg } from "@/constant/constants";
 import { addStatus, selectStatus, setStatus } from "@/util/status";
-import { addAdmin, checkAdminExists, removeAdmin, selectAllAdmins } from "@/util/groupAdmin";
+import {
+  addAdmin,
+  checkAdminExists,
+  removeAdmin,
+  selectAllAdmins,
+} from "@/util/groupAdmin";
 import { addBlack, checkBlackExists, selectBlacklists } from "@/util/blacklist";
 import { conf } from "@/config";
 import { addNote, delNote, type Note, selectNote } from "@/util/note";
@@ -44,11 +59,17 @@ export async function createGenshinData(evt: GroupMessageEvent) {
         let res = img[randNum(30)];
         logger.info("createGenshinData");
         logger.info(res);
-        evt.reply([`title:${res?.title}\npid:${res?.picture_id}\n`, segment.image(res?.original_url!)]);
+        evt.reply([
+          `title:${res?.title}\npid:${res?.picture_id}\n`,
+          segment.image(res?.original_url!),
+        ]);
       } else {
         const img = await genshinData(randNum(10));
         let res = img[randNum(30)];
-        evt.reply([`title:${res?.title}\npid:${res?.picture_id}\n`, segment.image(res?.original_url!)]);
+        evt.reply([
+          `title:${res?.title}\npid:${res?.picture_id}\n`,
+          segment.image(res?.original_url!),
+        ]);
       }
     } catch (err) {
       evt.reply(replyMsg.errMsg(err as Error));
@@ -81,7 +102,10 @@ export function createPixivPublic(evt: GroupMessageEvent) {
           let res = img[randNum(16)];
           logger.info("createPixivPublic");
           logger.info(res);
-          evt.reply([`title:${res?.title}\npid:${res?.picture_id}\n`, segment.image(res?.original_url!)]);
+          evt.reply([
+            `title:${res?.title}\npid:${res?.picture_id}\n`,
+            segment.image(res?.original_url!),
+          ]);
         })
         .catch((err) => {
           evt.reply(replyMsg.errMsg(err));
@@ -105,7 +129,10 @@ export function createPixivRanking(evt: GroupMessageEvent) {
           let res = img[randNum(16)];
           logger.info("createPixivRanking");
           logger.info(res);
-          evt.reply([`title:${res?.title}\npid:${res?.picture_id}\n`, segment.image(res?.original_url!)]);
+          evt.reply([
+            `title:${res?.title}\npid:${res?.picture_id}\n`,
+            segment.image(res?.original_url!),
+          ]);
         })
         .catch((err) => {
           evt.reply(replyMsg.errMsg(err));
@@ -201,9 +228,11 @@ export function createCos(evt: GroupMessageEvent) {
     getCos()
       .then((res: string[][]) => {
         let randomArtile: string[] = res[randNum(40)]!;
-        const imgUrls: string[] = randomArtile.slice(0, 3).filter(Boolean) as string[];
+        const imgUrls: string[] = randomArtile
+          .slice(0, 3)
+          .filter(Boolean) as string[];
         logger.info("createCos");
-        logger.info(res)
+        logger.info(res);
         evt.reply(imgUrls.map((i) => segment.image(i)));
       })
       .catch((err) => {
@@ -212,20 +241,19 @@ export function createCos(evt: GroupMessageEvent) {
   }
 }
 export async function createComics(evt: GroupMessageEvent) {
- const msg = evt.raw_message;
- if (mihoyoReg.comics.test(msg)) {
-   try {
-     const res: string[] = await getComics();
-     logger.info("createComics");
-     logger.info(res)
-     const arr=getUniqueRandomInt(0,res.length,2)
-     const imgUrl = [res[ arr[0]],res[arr[1]??1]];
-     evt.reply(imgUrl.map(i=>segment.image(i)));
-   } catch (error) {
-        evt.reply(replyMsg.errMsg(error));
-   }
- }
- 
+  const msg = evt.raw_message;
+  if (mihoyoReg.comics.test(msg)) {
+    try {
+      const res: string[] = await getComics();
+      logger.info("createComics");
+      logger.info(res);
+      const arr = getUniqueRandomInt(0, res.length, 2);
+      const imgUrl = [res[arr[0]], res[arr[1] ?? 1]];
+      evt.reply(imgUrl.map((i) => segment.image(i)));
+    } catch (error) {
+      evt.reply(replyMsg.errMsg(error));
+    }
+  }
 }
 /**
  * 米游社同人
@@ -367,7 +395,8 @@ export function createAtAction(evt: GroupMessageEvent) {
       evt.reply(["您已被拉黑", segment.at(userId)]);
       return;
     }
-    let isAdmin = commonReg.admin.test(String(userId)) || admins.includes(String(userId));
+    let isAdmin =
+      commonReg.admin.test(String(userId)) || admins.includes(String(userId));
     logger.info(`数据库是否存在:${admins.includes(userId)}`);
     logger.info(`管理员?${isAdmin}`);
     logger.info(msg);
@@ -376,7 +405,12 @@ export function createAtAction(evt: GroupMessageEvent) {
       if (commonReg.sleep.test(msg)) {
         if (userId == conf.master) {
           evt.reply("好的,主人");
-          evt.reply(["晚安啦", segment.image("https://img-static.mihoyo.com/communityweb/upload/1911ab16b4af46252dbd90fc539d4fc5.png")]);
+          evt.reply([
+            "晚安啦",
+            segment.image(
+              "https://img-static.mihoyo.com/communityweb/upload/1911ab16b4af46252dbd90fc539d4fc5.png",
+            ),
+          ]);
           if (flag) {
             setStatus(groupId, true);
           } else {
@@ -491,7 +525,11 @@ export async function getWeather(evt: GroupMessageEvent, bot: Client) {
 
     logger.info(res3);
 
-    bot.sendGroupMsg(869464578, [segment.image(randomArticle), segment.image(randomArticle1), segment.image(randomArticle2)]);
+    bot.sendGroupMsg(869464578, [
+      segment.image(randomArticle),
+      segment.image(randomArticle1),
+      segment.image(randomArticle2),
+    ]);
   }
 }
 export async function sendVideo(evt: GroupMessageEvent) {
@@ -508,7 +546,8 @@ export async function sendVideo(evt: GroupMessageEvent) {
     evt.reply(["您已被拉黑", segment.at(userId)]);
     return;
   }
-  let isAdmin = commonReg.admin.test(String(userId)) || admins.includes(String(userId));
+  let isAdmin =
+    commonReg.admin.test(String(userId)) || admins.includes(String(userId));
 
   if (msg.includes("douyin") && isAdmin) {
     let arr = msg.split("#", 2);
@@ -593,7 +632,11 @@ export function createVersionAction(evt: GroupMessageEvent) {
  * @param evt
  * @returns
  */
-export function addGroupNote(userId: number, msg: string, evt: GroupMessageEvent) {
+export function addGroupNote(
+  userId: number,
+  msg: string,
+  evt: GroupMessageEvent,
+) {
   if (commonReg.addNote.test(msg)) {
     logger.info(userId);
     let noteStr = msg.split("#", 2);
@@ -611,7 +654,11 @@ export function addGroupNote(userId: number, msg: string, evt: GroupMessageEvent
  * @param evt
  * @returns
  */
-export function getGroupNote(userId: number, msg: string, evt: GroupMessageEvent) {
+export function getGroupNote(
+  userId: number,
+  msg: string,
+  evt: GroupMessageEvent,
+) {
   if (commonReg.getNote.test(msg)) {
     let notes = selectNote(userId) as Note[];
     if (notes) {
@@ -633,7 +680,11 @@ export function getGroupNote(userId: number, msg: string, evt: GroupMessageEvent
  * @param evt
  * @returns
  */
-export function delGroupNote(userId: number, msg: string, evt: GroupMessageEvent) {
+export function delGroupNote(
+  userId: number,
+  msg: string,
+  evt: GroupMessageEvent,
+) {
   if (commonReg.delNote.test(msg)) {
     let [_, noticeId] = msg.split("#", 2);
     delNote(+noticeId!, userId);

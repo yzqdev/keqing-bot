@@ -24,18 +24,18 @@ export interface TongrenList {
     fileSize: number;
   };
 }
-export interface ComicsItem{
-  post_id:number
-  pic:{
-    url:string
-  }
-  type:string
+export interface ComicsItem {
+  post_id: number;
+  pic: {
+    url: string;
+  };
+  type: string;
 }
 export interface Comics {
   retcode: string;
   message: string;
   data: {
     fan_arts: ComicsItem[];
-    has_more:boolean
+    has_more: boolean;
   };
 }
