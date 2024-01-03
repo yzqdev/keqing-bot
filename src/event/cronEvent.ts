@@ -13,7 +13,7 @@ import { getUniqueRandomInt, randNum } from "@/util/num";
 import { conf } from "@/config";
 import { replyMsg } from "@/constant/constants";
 import { createGenshinData } from "@/action/groupAction";
-import { genshinData } from "@/service/pixivService";
+import { genshinData, getRandomPixivImgs, starrailTags } from "@/service/pixivService";
 import { defaultLog } from "@/util/logger";
 import { fileURLToPath } from "node:url";
 import { relative } from "node:path";
@@ -23,19 +23,21 @@ const logger = defaultLog(
 export class CronEvent extends AbstractEvent {
   load(bot: Client) {
     const noonJob = new CronJob("1 1 12 * * *", async () => {
-      const img = await genshinData(1);
-      let res = img[randNum(img.length)];
+     if (new Date().getDate()%2==0) {
+       const { randomArticle1, randomArticle2, randomArticle3 } =
+         await getRandomPixivImgs();
+       for (let item of conf.preferGroup) {
+         bot.sendGroupMsg(item, replyMsg.about12Clock);
 
-      let res1 = await genshinData(1);
-      let res2 = await genshinData(2);
-      let res3 = await genshinData(3);
-      let randomArticle1 = res1[randNum(res1.length)]!.original_url;
-      let randomArticle2 = res2[randNum(res2.length)]!.original_url;
-      let randomArticle3 = res3[randNum(res3.length)]!.original_url;
-      logger.info("中午12点同人");
-      logger.info(res1);
-      logger.info(res2);
-      logger.info(res3);
+         bot.sendGroupMsg(item, [
+           segment.image(randomArticle1),
+           segment.image(randomArticle2),
+           segment.image(randomArticle3),
+         ]);
+       }
+     }else{
+      const { randomArticle1, randomArticle2, randomArticle3 } =
+        await getRandomPixivImgs(starrailTags);
       for (let item of conf.preferGroup) {
         bot.sendGroupMsg(item, replyMsg.about12Clock);
 
@@ -45,6 +47,7 @@ export class CronEvent extends AbstractEvent {
           segment.image(randomArticle3),
         ]);
       }
+     }
     });
     const afternoonJob = new CronJob("1 0 20 * * *", async () => {
       const res: string[][] = await getCos();

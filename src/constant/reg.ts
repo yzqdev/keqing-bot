@@ -6,7 +6,7 @@ export const mihoyoReg = {
   tongren: /^%同人$/,
   beauty: /^%美图$/,
   genshin: /(^%原神(#[0-9]+)?$)|%(涩图|色图|好看|好康|再来一张)/,
-
+  starrail: /%(崩铁|崩坏)/,
   cos: /^%cos$/,
   comics: /^%漫画$/,
   emoj: /^%emoj$/,
