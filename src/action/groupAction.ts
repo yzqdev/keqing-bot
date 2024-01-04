@@ -593,20 +593,26 @@ export async function getXiaojiDict(evt: GroupMessageEvent) {
   }
 }
 export async function createStarrailPixiv(evt: GroupMessageEvent) {
-    let msg = evt.raw_message;
-    if (mihoyoReg.starrail.test(msg)) {
-      try {
-     const { randomArticle1, randomArticle2, randomArticle3 } =
-       await getRandomPixivImgs();
-         
-        logger.info(`createStarrailPixiv`);
-        logger.info(`获取的图片${randomArticle1},${randomArticle2},${randomArticle3}`);
-        evt.reply([segment.image(randomArticle1 ),segment.image(randomArticle2),segment.image(randomArticle3)]);
-      } catch (e) {
-        logger.info(`错误`,e);
-        evt.reply(replyMsg.errMsg(e as Error));
-      }
+  let msg = evt.raw_message;
+  if (mihoyoReg.starrail.test(msg)) {
+    try {
+      const { randomArticle1, randomArticle2, randomArticle3 } =
+        await getRandomPixivImgs();
+
+      logger.info(`createStarrailPixiv`);
+      logger.info(
+        `获取的图片${randomArticle1},${randomArticle2},${randomArticle3}`,
+      );
+      evt.reply([
+        segment.image(randomArticle1),
+        segment.image(randomArticle2),
+        segment.image(randomArticle3),
+      ]);
+    } catch (e) {
+      logger.info(`错误`, e);
+      evt.reply(replyMsg.errMsg(e as Error));
     }
+  }
 }
 export async function createRealPixiv(evt: GroupMessageEvent) {
   let msg = evt.raw_message;

@@ -58,7 +58,7 @@ export class GroupEvent extends AbstractEvent {
         // 推荐图片
         createPixivPublic(evt);
         createGenshinData(evt);
-        createStarrailPixiv(evt)
+        createStarrailPixiv(evt);
         //米哈游表情
         createEmoj(evt);
         //来一首诗
