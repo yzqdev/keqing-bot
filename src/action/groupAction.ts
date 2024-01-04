@@ -597,7 +597,7 @@ export async function createStarrailPixiv(evt: GroupMessageEvent) {
   if (mihoyoReg.starrail.test(msg)) {
     try {
       const { randomArticle1, randomArticle2, randomArticle3 } =
-        await getRandomPixivImgs();
+        await getRandomPixivImgs(starrailTags);
 
       logger.info(`createStarrailPixiv`);
       logger.info(

@@ -58,12 +58,18 @@ export async function rankData(offsetIndex: number = 1): Promise<PixivItem[]> {
   return pixList;
 }
 export const starrailTags = "崩坏星穹铁道";
-export async function genshinData(pageNum: number = 1, tag = "genshin+impact") {
+export const genshinTags="Genshin+Impact,GenshinImpact,Genshin"
+export async function genshinData(
+  pageNum: number = 1,
+  tag = genshinTags,
+) {
   let pixList: PixivItem[] = [];
-  let genshinUrl = `http://www.vilipix.com/api/v1/picture/public?limit=30&tags=${tag}&sort=new&offset=${
+  // let genshinUrl = `http://www.vilipix.com/api/v1/picture/public?limit=30&tags=${tag}&sort=new&offset=${
+  //   30 * pageNum
+  // }`;
+  let genshinUrl = `https://api2.vilipix.com/api/v1/picture/public?limit=30&tags=${tag}&sort=new&offset=${
     30 * pageNum
   }`;
-
   let { data } = (await got
     .get(genshinUrl, {
       https: {
@@ -90,7 +96,7 @@ export async function realPixiv() {
   let singleImg = img.data[0]!.urls.original;
   return singleImg;
 }
-export async function getRandomPixivImgs(tags: string = "") {
+export async function getRandomPixivImgs(tags =genshinTags) {
   let res1 = await genshinData(1, tags);
   let res2 = await genshinData(2, tags);
   let res3 = await genshinData(3, tags);
