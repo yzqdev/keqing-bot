@@ -27,30 +27,16 @@ const logger = defaultLog(
 export class CronEvent extends AbstractEvent {
   load(bot: Client) {
     const noonJob = new CronJob("1 1 12 * * *", async () => {
-      if (new Date().getDate() % 2 == 0) {
-        const { randomArticle1, randomArticle2, randomArticle3 } =
-          await getRandomPixivImgs();
-        for (let item of conf.preferGroup) {
-          bot.sendGroupMsg(item, replyMsg.about12Clock);
+      const { randomArticle1, randomArticle2, randomArticle3 } =
+        await getRandomPixivImgs();
+      for (let item of conf.preferGroup) {
+        bot.sendGroupMsg(item, replyMsg.about12Clock);
 
-          bot.sendGroupMsg(item, [
-            segment.image(randomArticle1),
-            segment.image(randomArticle2),
-            segment.image(randomArticle3),
-          ]);
-        }
-      } else {
-        const { randomArticle1, randomArticle2, randomArticle3 } =
-          await getRandomPixivImgs(starrailTags);
-        for (let item of conf.preferGroup) {
-          bot.sendGroupMsg(item, replyMsg.about12Clock);
-
-          bot.sendGroupMsg(item, [
-            segment.image(randomArticle1),
-            segment.image(randomArticle2),
-            segment.image(randomArticle3),
-          ]);
-        }
+        bot.sendGroupMsg(item, [
+          segment.image(randomArticle1),
+          segment.image(randomArticle2),
+          segment.image(randomArticle3),
+        ]);
       }
     });
     const afternoonJob = new CronJob("1 0 20 * * *", async () => {
@@ -76,17 +62,19 @@ export class CronEvent extends AbstractEvent {
       }
     });
     const eighteenClockJob = new CronJob("1 0 18 * * *", async () => {
-      const res: string[] = await getComics();
-
-      const arr = getUniqueRandomInt(0, res.length, 2);
-      const imgUrl = [res[arr[0]], res[arr[1] ?? 1]];
+      const { randomArticle1, randomArticle2, randomArticle3 } =
+        await getRandomPixivImgs(starrailTags);
       for (let item of conf.preferGroup) {
-        bot.sendGroupMsg(item, `${new Date().getHours()}点了,来看漫画吧`);
-
         bot.sendGroupMsg(
           item,
-          imgUrl.map((i) => segment.image(i)),
+          `${new Date().getHours()}点了,来看一些崩铁同人作品吧`,
         );
+
+        bot.sendGroupMsg(item, [
+          segment.image(randomArticle1),
+          segment.image(randomArticle2),
+          segment.image(randomArticle3),
+        ]);
       }
     });
     noonJob.start();
