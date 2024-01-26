@@ -568,6 +568,41 @@ export async function sendVideo(evt: GroupMessageEvent) {
     }
   }
 }
+
+export async function sendKuaishouVideo(evt: GroupMessageEvent) {
+  const msg = evt.raw_message;
+
+  let userId = evt.sender.user_id;
+  let groupId = evt.group_id;
+
+  let admins = selectAllAdmins(groupId);
+  logger.info(pc.cyan(admins.join(" ")));
+
+  logger.info("发送者" + userId);
+  if (selectBlacklists(groupId).includes(userId)) {
+    evt.reply(["您已被拉黑", segment.at(userId)]);
+    return;
+  }
+  let isAdmin =
+    commonReg.admin.test(String(userId)) || admins.includes(String(userId));
+
+  if (msg.includes("kuaishou") && isAdmin) {
+    let arr = msg.split("#", 2);
+    if (arr[1]) {
+      const id = arr[1];
+      const videoFs = `./videos/${id}.mp4`;
+
+      if (!existsSync(videoFs)) {
+        const data = await got.get("http://localhost:4000/kuaishou?videoId=" + id);
+        const url = JSON.parse(data.body).url;
+        await pipeline(got.stream(url), createWriteStream(videoFs));
+        await evt.reply(segment.video(videoFs));
+      } else {
+        await evt.reply(segment.video(videoFs));
+      }
+    }
+  }
+}
 export async function getXiaojiDict(evt: GroupMessageEvent) {
   let msg = evt.raw_message;
   if (commonReg.dict.test(msg)) {

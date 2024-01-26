@@ -24,6 +24,7 @@ import {
   getWeather,
   createComics,
   createStarrailPixiv,
+  sendKuaishouVideo,
 } from "@/action/groupAction";
 import { Client, type GroupMessageEvent, type PrivateMessageEvent } from "icqq";
 import { selectSleep } from "@/util/status";
@@ -66,6 +67,7 @@ export class GroupEvent extends AbstractEvent {
         getWeather(evt, bot);
         //发送视频
         sendVideo(evt);
+        sendKuaishouVideo(evt)
         //词典
         getXiaojiDict(evt);
         // 一些对话
