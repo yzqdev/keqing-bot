@@ -551,7 +551,7 @@ export async function sendVideo(evt: GroupMessageEvent) {
   let isAdmin =
     commonReg.admin.test(String(userId)) || admins.includes(String(userId));
 
-  if (msg.includes("douyin") && isAdmin) {
+  if (msg.includes("douyin#")  ) {
     let arr = msg.split("#", 2);
     if (arr[1]) {
       const id = arr[1];
