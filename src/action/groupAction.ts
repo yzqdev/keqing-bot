@@ -558,7 +558,10 @@ export async function sendVideo(evt: GroupMessageEvent) {
       const videoFs = `./videos/${id}.mp4`;
 
       if (!existsSync(videoFs)) {
-        const data = await got.get("http://localhost:4000/video?videoId=" + id);
+        const data = await got.get(
+          "http://localhost:4000/douyin?videoId=" + id,
+          { timeout: { request: 50*1000 } },
+        );
         const url = JSON.parse(data.body).url;
         await pipeline(got.stream(url), createWriteStream(videoFs));
         await evt.reply(segment.video(videoFs));

@@ -25,29 +25,29 @@
     "stop": "pm2 stop bot.json"
   },
   "dependencies": {
-    "better-sqlite3": "^9.2.2",
+    "better-sqlite3": "^9.6.0",
     "cheerio": "1.0.0-rc.12",
-    "cli-table3": "^0.6.3",
-    "cron": "^3.1.6",
-    "got": "^14.0.0",
+    "cli-table3": "^0.6.4",
+    "cron": "^3.1.7",
+    "got": "^14.2.1",
     "icqq": "^0.6.6",
-    "lowdb": "^6.1.1",
+    "lowdb": "^7.0.1",
     "picocolors": "^1.0.0",
-    "pm2": "^5.3.0",
-    "puppeteer": "^21.6.1",
+    "pm2": "^5.3.1",
+    "puppeteer": "^22.8.0",
     "timeago.js": "^4.0.2",
-    "winston": "^3.11.0",
-    "winston-daily-rotate-file": "^4.7.1"
+    "winston": "^3.13.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
-    "@types/better-sqlite3": "^7.6.8",
-    "@types/node": "^20.10.5",
+    "@types/better-sqlite3": "^7.6.10",
+    "@types/node": "^20.12.11",
     "@types/node-cron": "^3.0.11",
-    "esno": "^4.0.0",
-    "prettier": "^3.1.1",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3",
+    "esno": "^4.7.0",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5",
     "unbuild": "^2.0.0"
   }
 }
