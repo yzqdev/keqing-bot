@@ -559,7 +559,7 @@ export async function sendVideo(evt: GroupMessageEvent) {
 
       if (!existsSync(videoFs)) {
         const data = await got.get(
-          "http://localhost:4000/douyin?videoId=" + id,
+          "http://localhost:4000/api/douyin?videoId=" + id,
           { timeout: { request: 50*1000 } },
         );
         const url = JSON.parse(data.body).url;
@@ -596,7 +596,7 @@ export async function sendKuaishouVideo(evt: GroupMessageEvent) {
       const videoFs = `./videos/${id}.mp4`;
 
       if (!existsSync(videoFs)) {
-        const data = await got.get("http://localhost:4000/kuaishou?videoId=" + id);
+        const data = await got.get("http://localhost:4000/api/kuaishou?videoId=" + id);
         const url = JSON.parse(data.body).url;
         await pipeline(got.stream(url), createWriteStream(videoFs));
         await evt.reply(segment.video(videoFs));

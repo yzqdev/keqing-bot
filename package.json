@@ -25,16 +25,16 @@
     "stop": "pm2 stop bot.json"
   },
   "dependencies": {
-    "better-sqlite3": "^9.6.0",
+    "better-sqlite3": "^11.0.0",
     "cheerio": "1.0.0-rc.12",
-    "cli-table3": "^0.6.4",
+    "cli-table3": "^0.6.5",
     "cron": "^3.1.7",
-    "got": "^14.2.1",
+    "got": "^14.3.0",
     "icqq": "^0.6.6",
     "lowdb": "^7.0.1",
-    "picocolors": "^1.0.0",
-    "pm2": "^5.3.1",
-    "puppeteer": "^22.8.0",
+    "picocolors": "^1.0.1",
+    "pm2": "^5.4.0",
+    "puppeteer": "^22.10.0",
     "timeago.js": "^4.0.2",
     "winston": "^3.13.0",
     "winston-daily-rotate-file": "^5.0.0"
@@ -42,10 +42,10 @@
   "devDependencies": {
     "@sindresorhus/tsconfig": "^5.0.0",
     "@types/better-sqlite3": "^7.6.10",
-    "@types/node": "^20.12.11",
+    "@types/node": "^20.14.0",
     "@types/node-cron": "^3.0.11",
     "esno": "^4.7.0",
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.0",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5",
     "unbuild": "^2.0.0"
